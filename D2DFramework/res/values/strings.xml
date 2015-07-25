@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">D2D Framework</string>
+    <string name="action_about">About</string>
+    <string name="discover">Discover</string>
+    <string name="test">Test</string>
+    
+
+</resources>
