@@ -34,17 +34,27 @@
             </intent-filter>
         </activity>
         
+        <!-- services -->
          <service
             android:name="ee.ut.cs.d2d.services.D2DMeshService"
             android:icon="@drawable/ic_launcher"
             android:enabled="true"
             android:exported="false" />
-        
+         
+         <!-- receivers -->
          <receiver android:name="ee.ut.cs.d2d.network.D2DBluetoothDiscovery$BtReceiverOpportunity" android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.BT_DISCOVERY_FINISHED" />
             </intent-filter>
-
+        </receiver>
+        
+         <receiver android:name="ee.ut.cs.d2d.services.D2DScanScheduler" android:enabled="true">
+            <intent-filter>
+                <action android:name="ee.ut.cs.intent.action.SCAN" />
+            </intent-filter>
+        </receiver>
+        
+        <receiver android:name="ee.ut.cs.d2d.services.D2DScanService" android:enabled="true">
         </receiver>
 
          

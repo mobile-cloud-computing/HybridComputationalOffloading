@@ -1,0 +1,53 @@
+package ee.ut.cs.d2d.services;
+
+import java.util.Calendar;
+
+import ee.ut.cs.d2d.network.D2DBluetooth;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
+
+public class D2DScanScheduler extends BroadcastReceiver {
+
+	public final static String TAG = D2DScanScheduler.class.getCanonicalName();
+	
+	public static final String D2DSCANSCHEDULER_ACTION_SCAN = "ee.ut.cs.intent.action.SCAN";
+
+	// Restart service every 30 seconds
+	// Scheduling policy
+	// There should be multiple policies to scan for surrogates
+	private static final long REPEAT_TIME = 1000 * 30;
+
+	
+	@Override
+	public void onReceive(Context context, Intent intent) {
+		// TODO Auto-generated method stub
+		AlarmManager service = (AlarmManager) context
+				.getSystemService(Context.ALARM_SERVICE);
+		
+		/*The service starts in the onStartCommand method*/
+		Intent i = new Intent(context, D2DScanService.class);
+		PendingIntent pending = PendingIntent.getBroadcast(context, 0, i,
+				PendingIntent.FLAG_CANCEL_CURRENT);
+		Calendar cal = Calendar.getInstance();
+		// Start 30 seconds after boot completed
+		cal.add(Calendar.SECOND, 30);
+		//
+		// Fetch every 30 seconds
+		// InexactRepeating allows Android to optimize the energy consumption
+		service.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+				cal.getTimeInMillis(), REPEAT_TIME, pending);
+		
+		/*Toast.makeText(context, "Service is schedule to restart each: " + REPEAT_TIME/1000 + " seconds",
+		        Toast.LENGTH_LONG).show();*/
+		
+		
+		
+		Log.d(TAG, "My scheduler is called...");
+		
+	} 
+
+}

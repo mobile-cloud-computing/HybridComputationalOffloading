@@ -1,6 +1,8 @@
 package ee.ut.cs.d2d.services;
 
 import ee.ut.cs.d2d.network.D2DBluetooth;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -19,7 +21,16 @@ public class D2DMeshService extends Service {
 	@Override  
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.d(TAG, "onStartCommand");
-			
+		 
+		if (btDevice!=null){
+			Log.d(TAG, "discovery can be called without instantiation");
+		}
+		
+		//it works as expected
+		//proper policies should be put in place
+		//works together with startScanScheduler(); 
+		forcedStop();
+		
 		return Service.START_NOT_STICKY;
 	}
 	
@@ -30,6 +41,20 @@ public class D2DMeshService extends Service {
 		return mBinder;
 	}
 	
+	@Override
+	public void onDestroy(){
+		Log.d(TAG, "service finished");
+		
+		//scheduler service is stopped here
+		//works together with startScanScheduler() and forcedStop();
+		stopScanScheduler();
+		
+		super.onDestroy();
+		
+		
+		
+	}
+		
 	public class MyBinder extends Binder {
 		public D2DMeshService getMeshServiceInstance() {
 			return D2DMeshService.this;
@@ -50,16 +75,50 @@ public class D2DMeshService extends Service {
 		btDevice.D2DDiscovery();
 	}
 	
-	public void print(){
-		Log.d(TAG, "Service method called");
-	}
-	
+
 	public void setServiceContext(Context context){
 		if (btDevice==null){
 			Log.d(TAG, "device instance is null");
 			btDevice = new D2DBluetooth(context);
+			
+			//works together with stopScanScheduler() and forcedStop();
+			startScanScheduler();
 		}
 		
+	}
+	
+	public void startScanScheduler(){
+		Intent intentScheduler = new Intent(D2DScanScheduler.D2DSCANSCHEDULER_ACTION_SCAN);
+		sendBroadcast(intentScheduler);
+		
+	}
+	
+	
+	public void stopScanScheduler(){
+		 Intent intent = new Intent(this, D2DScanService.class);
+	 	 PendingIntent pending = PendingIntent.getBroadcast(this, 0, intent, 
+	               PendingIntent.FLAG_CANCEL_CURRENT);
+	 	    
+	 	 AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE); 
+	 	 alarmManager.cancel(pending);
+	 	   
+	 	 Log.d(TAG, "alarm service stopped");
+	}
+	
+	
+	public void forcedStop(){
+		Intent intentStop = new Intent(this, D2DMeshService.class);
+ 	    stopService(intentStop);
+	}
+
+	
+	
+	
+	/**
+	 * testing method
+	 */
+	public void print(){
+		Log.d(TAG, "Service method called");
 	}
 
 }
