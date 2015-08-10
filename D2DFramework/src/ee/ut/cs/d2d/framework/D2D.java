@@ -51,7 +51,6 @@ public class D2D extends Activity{
 	
 	D2DBluetoothActions btReceiver = new D2DBluetoothActions(this);
 	private BluetoothAdapter btAdapter;
-	//D2DBluetooth btDevice;
 	
 	private D2DMeshService meshService; 
 	Context context;
@@ -64,7 +63,6 @@ public class D2D extends Activity{
 	    context = this;
 	    
 	    btAdapter = BluetoothAdapter.getDefaultAdapter();
-	    //btDevice = new D2DBluetooth(this);
 	     
 	    outputScreen = (TextView)findViewById(R.id.outputTextViewer);
 	     
@@ -79,7 +77,7 @@ public class D2D extends Activity{
 						}else{
 							Log.d(TAG, "service is not connected");
 						}
-						//btDevice.D2DOff();
+					
 					} else {
 						if (!btAdapter.isEnabled()){
 							if (meshService!=null){
@@ -87,7 +85,6 @@ public class D2D extends Activity{
 							}else{
 								Log.d(TAG, "service is not connected");
 							}
-							//btDevice.D2DOn();
 						}
 					}
 				} catch (Exception e) {
@@ -103,7 +100,7 @@ public class D2D extends Activity{
 				try {
 					Toast.makeText(getBaseContext(), "Cleaning screen..", Toast.LENGTH_SHORT).show();
 					clearOutputScreen();
-					meshService.print();
+					
 			
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -122,7 +119,6 @@ public class D2D extends Activity{
 						}else{
 							Log.d(TAG, "service is not connected");
 						}
-						//btDevice.D2DDiscovery();
 				
 					} catch (Exception e) {
 						e.printStackTrace();

@@ -1,6 +1,18 @@
+/*
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * Please send inquiries to huber AT ut DOT ee
+ *
+ */
+
+
 package ee.ut.cs.d2d.services;
 
 import ee.ut.cs.d2d.network.D2DBluetooth;
+import ee.ut.cs.d2d.network.OpportunisticDevices;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -18,12 +30,17 @@ public class D2DMeshService extends Service {
 	
 	D2DBluetooth btDevice = null;
 	
+	 
 	@Override  
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.d(TAG, "onStartCommand");
 		 
 		if (btDevice!=null){
 			Log.d(TAG, "discovery can be called without instantiation");
+			//OpportunisticDevices.getInstance().getOpportunisticDevices(); //contains the devices in proximity
+			
+			
+			
 		}
 		
 		//it works as expected
@@ -50,9 +67,6 @@ public class D2DMeshService extends Service {
 		stopScanScheduler();
 		
 		super.onDestroy();
-		
-		
-		
 	}
 		
 	public class MyBinder extends Binder {
@@ -61,7 +75,6 @@ public class D2DMeshService extends Service {
 		}
 
 	}
-	
 	
 	public void btOn(){
 		btDevice.D2DOn();
@@ -90,7 +103,6 @@ public class D2DMeshService extends Service {
 	public void startScanScheduler(){
 		Intent intentScheduler = new Intent(D2DScanScheduler.D2DSCANSCHEDULER_ACTION_SCAN);
 		sendBroadcast(intentScheduler);
-		
 	}
 	
 	
