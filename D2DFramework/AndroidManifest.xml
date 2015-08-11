@@ -57,7 +57,7 @@
     			<action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
             </intent-filter>
         </receiver>
-        
+         
          <receiver android:name="ee.ut.cs.d2d.services.D2DScanScheduler" android:enabled="true">
             <intent-filter>
                 <action android:name="ee.ut.cs.intent.action.SCAN" />

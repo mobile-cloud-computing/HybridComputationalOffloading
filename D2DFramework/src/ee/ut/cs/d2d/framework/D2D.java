@@ -12,6 +12,7 @@
 package ee.ut.cs.d2d.framework;
 
 import ee.ut.cs.d2d.network.D2DBluetoothActions;
+import ee.ut.cs.d2d.profilers.BatteryProfiler;
 import ee.ut.cs.d2d.services.D2DMeshService;
 
 import android.app.Activity;
@@ -25,6 +26,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.net.Uri;
+import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -43,7 +45,7 @@ public class D2D extends Activity{
 	
 	public static String OUTPUT_SCREEN_EVENT = "output_screen_event"; 
 	MessageReceiver screenReceiver;
-	
+	 
 	private TextView outputScreen;
 	private ImageButton bluetooth;
 	private ImageButton clean;
@@ -128,6 +130,11 @@ public class D2D extends Activity{
 	     
 	        
 	     registerBluetooth();
+	    
+	     BatteryProfiler bp = new BatteryProfiler(this);
+	     bp.getBatteryLevel();
+	     
+	     
 	 }
 	 
 	 public void registerBluetooth(){

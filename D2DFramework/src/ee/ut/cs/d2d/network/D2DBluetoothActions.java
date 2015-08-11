@@ -14,6 +14,7 @@ package ee.ut.cs.d2d.network;
 import java.util.ArrayList;
 
 import ee.ut.cs.d2d.framework.D2D;
+import ee.ut.cs.d2d.utilities.Commons;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -32,7 +33,7 @@ public class D2DBluetoothActions extends BroadcastReceiver{
 	private Context context;
 	
 	
-	public D2DBluetoothActions(Context context){
+	public D2DBluetoothActions(Context context){ 
 		this.context = context;
 		cont = 0;
 	}
@@ -48,19 +49,19 @@ public class D2DBluetoothActions extends BroadcastReceiver{
                                                  BluetoothAdapter.ERROR);
             switch (state) {
             case BluetoothAdapter.STATE_OFF:
-            		sendToScreen("Bluetooth OFF");
+            		Commons.sendToScreen(context, "Bluetooth OFF");
             	
                 break;
             case BluetoothAdapter.STATE_TURNING_OFF:
-            		sendToScreen("Turning OFF Bluetooth...");
+            		Commons.sendToScreen(context, "Turning OFF Bluetooth...");
             	
                 break;
             case BluetoothAdapter.STATE_ON:
-            		sendToScreen("Bluetooth ON");
+            		Commons.sendToScreen(context, "Bluetooth ON");
             	
                 break;
             case BluetoothAdapter.STATE_TURNING_ON:
-            		sendToScreen("Turning ON Bluetooth...");
+            		Commons.sendToScreen(context, "Turning ON Bluetooth...");
                 break;
             }
         }else{
@@ -97,15 +98,6 @@ public class D2DBluetoothActions extends BroadcastReceiver{
         	}
         } 
     }
-	
-
-	public void sendToScreen(String result){
-		Intent intent = new Intent(D2D.OUTPUT_SCREEN_EVENT);
-	    intent.putExtra("isPrint", false);
-	    intent.putExtra("output_screen_result", result);
-	    
-	    context.sendBroadcast(intent);
-	 }
 	
 	
 	public static void clearDeviceList(){
