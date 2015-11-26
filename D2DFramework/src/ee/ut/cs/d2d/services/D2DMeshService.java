@@ -34,7 +34,7 @@ public class D2DMeshService extends Service {
 	@Override  
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.d(TAG, "onStartCommand");
-		 
+		  
 		if (btDevice!=null){
 			Log.d(TAG, "discovery can be called without instantiation");
 			//OpportunisticDevices.getInstance().getOpportunisticDevices(); //contains the devices in proximity
