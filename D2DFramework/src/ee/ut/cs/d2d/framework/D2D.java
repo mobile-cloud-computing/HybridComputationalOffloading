@@ -26,7 +26,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.net.Uri;
-import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -48,7 +47,7 @@ public class D2D extends Activity{
 	 
 	private TextView outputScreen;
 	private ImageButton bluetooth;
-	private ImageButton clean; 
+	private ImageButton clean;
 	private ImageButton log;
 	
 	D2DBluetoothActions btReceiver = new D2DBluetoothActions(this);
