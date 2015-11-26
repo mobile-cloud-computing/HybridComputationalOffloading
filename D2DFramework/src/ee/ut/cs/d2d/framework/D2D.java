@@ -48,7 +48,7 @@ public class D2D extends Activity{
 	 
 	private TextView outputScreen;
 	private ImageButton bluetooth;
-	private ImageButton clean;
+	private ImageButton clean; 
 	private ImageButton log;
 	
 	D2DBluetoothActions btReceiver = new D2DBluetoothActions(this);
