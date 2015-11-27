@@ -1,4 +1,4 @@
-package ee.ut.cs.d2d.network;
+package ee.ut.cs.d2d.bluetooth;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;

@@ -11,8 +11,8 @@
 
 package ee.ut.cs.d2d.services;
 
-import ee.ut.cs.d2d.network.D2DBluetooth;
-import ee.ut.cs.d2d.network.OpportunisticDevices;
+import ee.ut.cs.d2d.bluetooth.D2DBluetooth;
+
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -39,7 +39,9 @@ public class D2DMeshService extends Service {
 			Log.d(TAG, "discovery can be called without instantiation");
 			//OpportunisticDevices.getInstance().getOpportunisticDevices(); //contains the devices in proximity
 			
-			
+			if (btDevice.getD2DBluetoothState().equals(btDevice.getD2DBluetoothIdle())){
+				btDevice.D2DDiscovery();
+			}
 			
 		}
 		

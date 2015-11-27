@@ -1,13 +1,11 @@
-package ee.ut.cs.d2d.network;
+package ee.ut.cs.d2d.bluetooth;
 
-import java.util.ArrayList;
-
-import ee.ut.cs.d2d.network.D2DBluetoothDiscovery.DeviceAwareness;
+//import ee.ut.cs.d2d.network.D2DBluetoothDiscovery.DeviceAwareness;
 
 public class OpportunisticDevices {
 	
 	/** Concurrent safe*/
-	public static OpportunisticDevices instance = new OpportunisticDevices();
+	/*public static OpportunisticDevices instance = new OpportunisticDevices();
 	
 	private ArrayList<DeviceAwareness> btDeviceListProximity = new ArrayList<DeviceAwareness>();
 	
@@ -23,6 +21,6 @@ public class OpportunisticDevices {
 	
 	public void setOpportunisticDevices(ArrayList<DeviceAwareness> btDeviceListProximity){
 		this.btDeviceListProximity = btDeviceListProximity; 
-	}
+	}*/
 	
 }

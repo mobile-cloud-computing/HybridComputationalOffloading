@@ -2,12 +2,12 @@ package ee.ut.cs.d2d.utilities;
 
 import android.content.Context;
 import android.content.Intent;
-import ee.ut.cs.d2d.framework.D2D;
+import ee.ut.cs.d2d.framework.D2DLog;
 
 public class Commons {
 	
 	public static void sendToScreen(Context context, String result){
-		Intent intent = new Intent(D2D.OUTPUT_SCREEN_EVENT);
+		Intent intent = new Intent(D2DLog.OUTPUT_SCREEN_EVENT);
 	    intent.putExtra("isPrint", false);
 	    intent.putExtra("output_screen_result", result);
 	    

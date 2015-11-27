@@ -9,11 +9,11 @@
  */
 
 
-package ee.ut.cs.d2d.network;
+package ee.ut.cs.d2d.bluetooth;
 
-import java.util.ArrayList;
+import java.util.List;
 
-import ee.ut.cs.d2d.framework.D2D;
+import ee.ut.cs.d2d.data.DeviceListAdapter;
 import ee.ut.cs.d2d.utilities.Commons;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -21,21 +21,25 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 public class D2DBluetoothActions extends BroadcastReceiver{
 	
 	private final String TAG = D2DBluetoothActions.class.getSimpleName();
-	public static ArrayList<BluetoothDevice> btDeviceList = new ArrayList<BluetoothDevice>();
-	int cont;
+	//public static ArrayList<BluetoothDevice> btDeviceList = new ArrayList<BluetoothDevice>();
+	//int cont;
 	
 	private Context context;
+
+	private List<String> mDevices;
+	private DeviceListAdapter mListAdapter;
 	
 	
-	public D2DBluetoothActions(Context context){ 
+	public D2DBluetoothActions(Context context, List<String> mDevices, DeviceListAdapter mListAdapter){
 		this.context = context;
-		cont = 0;
+		this.mDevices = mDevices;
+		this.mListAdapter = mListAdapter;
+		//cont = 0;
 	}
 	
 
@@ -69,14 +73,19 @@ public class D2DBluetoothActions extends BroadcastReceiver{
         	       BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
         	       Log.d(TAG, "\n  Device: " + device.getName() + ", " + device);
         	       
-        	       btDeviceList.add(device);
-        	       cont++;
-        	    
-        	}else{
+        	       //btDeviceList.add(device);
+        	       //cont++;
+
+				  if (!mDevices.contains(device.getName())){
+					  mDevices.add(device.getName());
+					  mListAdapter.notifyDataSetChanged();
+				  }
+
+			}else{
         		if(BluetoothDevice.ACTION_UUID.equals(action)) {
         	         BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
         	         Parcelable[] uuidExtra = intent.getParcelableArrayExtra(BluetoothDevice.EXTRA_UUID);
-        	         Log.d(TAG, "\n  UUID Device: " + device.getName() + ", " + device);
+					Log.d(TAG, "\n  UUID Device: " + device.getName() + ", " + device);
         	         if (uuidExtra!=null){
         	        	 
         	         }
@@ -89,7 +98,7 @@ public class D2DBluetoothActions extends BroadcastReceiver{
         	         }else{
         	        	 if(BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
         	                 Log.d(TAG, "\nDiscovery Finished");
-        	                 btDiscoveryFinished();
+        	                 //btDiscoveryFinished();
         	                 
         	                 
         	              }
@@ -100,7 +109,7 @@ public class D2DBluetoothActions extends BroadcastReceiver{
     }
 	
 	
-	public static void clearDeviceList(){
+	/*public static void clearDeviceList(){
 		btDeviceList.clear();
 	}
 	
@@ -113,7 +122,7 @@ public class D2DBluetoothActions extends BroadcastReceiver{
 	
 		context.sendBroadcast(intent);
 		
-	}
+	}*/
 	
 
 		

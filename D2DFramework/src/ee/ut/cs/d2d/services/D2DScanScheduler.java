@@ -13,7 +13,6 @@ package ee.ut.cs.d2d.services;
 
 import java.util.Calendar;
 
-import ee.ut.cs.d2d.network.D2DBluetooth;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -30,7 +29,7 @@ public class D2DScanScheduler extends BroadcastReceiver {
 	// Restart service every 30 seconds
 	// Scheduling policy
 	// There should be multiple policies to scan for surrogates
-	private static final long REPEAT_TIME = 1000 * 30;
+	private static final long REPEAT_TIME = 1000 * 120;
 
 	
 	@Override

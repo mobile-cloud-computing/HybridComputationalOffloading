@@ -35,7 +35,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
+
+        <activity android:name=".D2DLog"></activity>
+
+
         <!-- services -->
          <service
             android:name="ee.ut.cs.d2d.services.D2DMeshService"
@@ -43,12 +46,12 @@
             android:enabled="true"
             android:exported="false" />
          
-         <!-- receivers -->
+         <!-- receivers
          <receiver android:name="ee.ut.cs.d2d.network.D2DBluetoothDiscovery$CustomBluetoothReceiver" android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.BT_DISCOVERY_FINISHED" />
             </intent-filter>
-        </receiver>
+        </receiver>-->
         
          <receiver android:name="ee.ut.cs.d2d.profilers.BatteryProfiler$BatteryBroadcastReceiver" android:enabled="true">
             <intent-filter>

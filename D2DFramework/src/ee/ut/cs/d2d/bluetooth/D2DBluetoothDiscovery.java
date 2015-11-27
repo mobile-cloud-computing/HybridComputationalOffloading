@@ -9,34 +9,24 @@
  */
 
 
-package ee.ut.cs.d2d.network;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+package ee.ut.cs.d2d.bluetooth;
 
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.util.Log;
 
 
 public class D2DBluetoothDiscovery implements BluetoothState {
 	
-	public static final String KNOWN = "known";
+	/*public static final String KNOWN = "known";
 	public static final String UNKNOWN  = "unkown";
 	
 	public static String BT_DISCOVERY_STARTED = "android.intent.action.BT_DISCOVERY_STARTED"; 
 	public static String BT_DISCOVERY_FINISHED = "android.intent.action.BT_DISCOVERY_FINISHED"; 
-	
+	*/
+
 	private final String TAG = D2DBluetoothDiscovery.class.getSimpleName();
-	private ArrayList<BluetoothDevice> btDeviceListHistory = null;
-	private ArrayList<DeviceAwareness> btDeviceListProximity = null;
+	//private ArrayList<BluetoothDevice> btDeviceListHistory = null;
+	//private ArrayList<DeviceAwareness> btDeviceListProximity = null;
 	private BluetoothAdapter btAdapter;
 	
 	D2DBluetooth d2DBluetooth;
@@ -47,12 +37,12 @@ public class D2DBluetoothDiscovery implements BluetoothState {
 		this.d2DBluetooth = d2DBluetooth;
 		this.context = d2DBluetooth.getContext();
 		this.btAdapter = d2DBluetooth.getD2DBluetoothAdapter();
-		this.btDeviceListHistory = new ArrayList<BluetoothDevice>();
-		this.btDeviceListProximity = new ArrayList<DeviceAwareness>();
+		//this.btDeviceListHistory = new ArrayList<BluetoothDevice>();
+		//this.btDeviceListProximity = new ArrayList<DeviceAwareness>();
 	}
 	
 	
-	public void historyDeviceList(){
+	/*public void historyDeviceList(){
 		if (btAdapter == null) {
 			Set<BluetoothDevice> bondedSet = btAdapter.getBondedDevices();
 			for (BluetoothDevice device: bondedSet) {
@@ -60,10 +50,10 @@ public class D2DBluetoothDiscovery implements BluetoothState {
 			}
 			
 		}
-	}
+	}*/
 	
 	
-	public void proximityDeviceList(){ 
+	/*public void proximityDeviceList(){
 	
 		for (BluetoothDevice current: D2DBluetoothActions.btDeviceList ){
 			boolean existent = false; 
@@ -93,20 +83,20 @@ public class D2DBluetoothDiscovery implements BluetoothState {
 		
 		
 	}
-	
+	*/
 
 	
 
 	@Override
 	public void discovery() {
 		// TODO Auto-generated method stub
-		btDeviceListProximity.clear();
-		btDeviceListHistory.clear();
-		D2DBluetoothActions.clearDeviceList();
+	//	btDeviceListProximity.clear();
+	//	btDeviceListHistory.clear();
+		//D2DBluetoothActions.clearDeviceList();
 		
 		btAdapter.startDiscovery();
-		historyDeviceList();
-		new WaitUntilBluetoothScans().execute("");
+	//	historyDeviceList();
+		//new WaitUntilBluetoothScans().execute("");
 		
 		d2DBluetooth.setD2DBluetoothState(d2DBluetooth.getD2DBluetoothIdle());
 		
@@ -132,7 +122,7 @@ public class D2DBluetoothDiscovery implements BluetoothState {
 		
 	}
 	
-	
+	/*
 	public void printBtDeviceList(){
 		Iterator<DeviceAwareness> iterator = btDeviceListProximity.iterator();
 		
@@ -205,6 +195,8 @@ public class D2DBluetoothDiscovery implements BluetoothState {
 			return null;
 		}
 		
-		
-    }
+
+    }*/
+
+
 }
