@@ -5,6 +5,9 @@ import android.content.Intent;
 import ee.ut.cs.d2d.framework.D2DLog;
 
 public class Commons {
+
+	public static final String wifiDirect = "wifidirect";
+	public static final String bluetooth = "bluetooth";
 	
 	public static void sendToScreen(Context context, String result){
 		Intent intent = new Intent(D2DLog.OUTPUT_SCREEN_EVENT);

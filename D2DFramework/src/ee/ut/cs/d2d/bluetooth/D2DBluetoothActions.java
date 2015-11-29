@@ -13,6 +13,7 @@ package ee.ut.cs.d2d.bluetooth;
 
 import java.util.List;
 
+import ee.ut.cs.d2d.data.DeviceData;
 import ee.ut.cs.d2d.data.DeviceListAdapter;
 import ee.ut.cs.d2d.utilities.Commons;
 import android.bluetooth.BluetoothAdapter;
@@ -31,11 +32,12 @@ public class D2DBluetoothActions extends BroadcastReceiver{
 	
 	private Context context;
 
-	private List<String> mDevices;
+	//private List<String> mDevices;
+	private DeviceData mDevices;
 	private DeviceListAdapter mListAdapter;
 	
 	
-	public D2DBluetoothActions(Context context, List<String> mDevices, DeviceListAdapter mListAdapter){
+	public D2DBluetoothActions(Context context, DeviceData mDevices, /*DeviceData mDevices,*/ DeviceListAdapter mListAdapter){
 		this.context = context;
 		this.mDevices = mDevices;
 		this.mListAdapter = mListAdapter;
@@ -76,10 +78,16 @@ public class D2DBluetoothActions extends BroadcastReceiver{
         	       //btDeviceList.add(device);
         	       //cont++;
 
-				  if (!mDevices.contains(device.getName())){
+				  /*if (!mDevices.contains(device.getName())){
 					  mDevices.add(device.getName());
 					  mListAdapter.notifyDataSetChanged();
+				  }*/
+
+				  if (!mDevices.getPeers(Commons.bluetooth).contains(device.getAddress())){
+					  mDevices.addPeer(device);
+					  mListAdapter.notifyDataSetChanged();
 				  }
+
 
 			}else{
         		if(BluetoothDevice.ACTION_UUID.equals(action)) {

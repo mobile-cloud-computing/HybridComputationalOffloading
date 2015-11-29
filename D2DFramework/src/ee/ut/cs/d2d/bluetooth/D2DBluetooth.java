@@ -4,6 +4,8 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.util.Log;
 
+import ee.ut.cs.d2d.network.NetworkDevice;
+
 
 /**
  * 
@@ -11,7 +13,7 @@ import android.util.Log;
  *
  */
 
-public class D2DBluetooth {
+public class D2DBluetooth implements NetworkDevice{
 	
 	private static final String TAG = D2DBluetooth.class.getSimpleName();
 	
@@ -83,20 +85,23 @@ public class D2DBluetooth {
 	public BluetoothState getD2DBluetoothOff(){
 		return this.btOff;
 	}
-	
+
+	@Override
 	public void D2DDiscovery(){
 		btState.discovery();
 	}
 	
-		
+	@Override
 	public void D2DIdle(){
 		btState.idle();
 	}
-	
+
+	@Override
 	public void D2DOn(){
 		btState.on();
 	}
-	
+
+	@Override
 	public void D2DOff(){
 		btState.off();
 	}
@@ -104,6 +109,6 @@ public class D2DBluetooth {
 	public Context getContext(){
 		return this.context;
 	}
-	
-	
+
+
 }

@@ -20,9 +20,9 @@ public class DeviceListAdapter extends BaseAdapter {
     private List<String> mList;
     private LayoutInflater mLayoutInflater = null;
 
-    public DeviceListAdapter(Activity context, List<String> list) {
+    public DeviceListAdapter(Activity context, DeviceData D2DPeers, String nInterface) {
         mContext = context;
-        mList = list;
+        mList = D2DPeers.getPeers(nInterface);
         mLayoutInflater = (LayoutInflater) mContext
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }

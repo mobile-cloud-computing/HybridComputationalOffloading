@@ -11,8 +11,6 @@
 
 package ee.ut.cs.d2d.services;
 
-import ee.ut.cs.d2d.bluetooth.D2DBluetooth;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -22,20 +20,25 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import ee.ut.cs.d2d.network.NetworkCenter;
+import ee.ut.cs.d2d.network.NetworkDevice;
+
 public class D2DMeshService extends Service {
 	
 	private final String TAG = D2DMeshService.class.getSimpleName();
 	
 	private final IBinder mBinder = new MyBinder();
 	
-	D2DBluetooth btDevice = null;
-	
+	//D2DBluetooth btDevice = null;
+
+	NetworkDevice nDevice = null;
+
 	 
 	@Override  
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.d(TAG, "onStartCommand");
 		  
-		if (btDevice!=null){
+		/*if (btDevice!=null){
 			Log.d(TAG, "discovery can be called without instantiation");
 			//OpportunisticDevices.getInstance().getOpportunisticDevices(); //contains the devices in proximity
 			
@@ -43,7 +46,13 @@ public class D2DMeshService extends Service {
 				btDevice.D2DDiscovery();
 			}
 			
+		}*/
+
+		if (nDevice!=null){
+			nDevice.D2DDiscovery();
 		}
+
+
 		
 		//it works as expected
 		//proper policies should be put in place
@@ -77,7 +86,7 @@ public class D2DMeshService extends Service {
 		}
 
 	}
-	
+	/*
 	public void btOn(){
 		btDevice.D2DOn();
 	}
@@ -89,19 +98,41 @@ public class D2DMeshService extends Service {
 	public void btDiscovery(){
 		btDevice.D2DDiscovery();
 	}
-	
+	*/
 
-	public void setServiceContext(Context context){
-		if (btDevice==null){
+	public void on(){
+		nDevice.D2DOn();
+	}
+
+	public void off(){
+		nDevice.D2DOff();
+	}
+
+	public void discovery(){
+		nDevice.D2DDiscovery();
+	}
+
+
+	public void setServiceContext(Context context, String nInterface){
+		/*if (btDevice==null){
 			Log.d(TAG, "device instance is null");
 			btDevice = new D2DBluetooth(context);
 			
 			//works together with stopScanScheduler() and forcedStop();
 			startScanScheduler();
+		}*/
+
+		if (nDevice==null){
+			Log.d(TAG, "device instance is null");
+
+			nDevice = new NetworkCenter().getNetworkProvider(context, nInterface);
+
+			//works together with stopScanScheduler() and forcedStop();
+			startScanScheduler();
 		}
-		
+
 	}
-	
+
 	public void startScanScheduler(){
 		Intent intentScheduler = new Intent(D2DScanScheduler.D2DSCANSCHEDULER_ACTION_SCAN);
 		sendBroadcast(intentScheduler);
@@ -115,8 +146,8 @@ public class D2DMeshService extends Service {
 	 	    
 	 	 AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE); 
 	 	 alarmManager.cancel(pending);
-	 	   
-	 	 Log.d(TAG, "alarm service stopped");
+
+		Log.d(TAG, "alarm service stopped");
 	}
 	
 	
