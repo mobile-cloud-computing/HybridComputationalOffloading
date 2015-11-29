@@ -46,6 +46,20 @@ public class DeviceData {
         return null;
     }
 
+
+    public List getDevicePeers(String nInterface){
+        if (nInterface.equals(Commons.bluetooth)){
+            return this.bluetoothDevicePeers;
+        }else{
+            if (nInterface.equals(Commons.wifiDirect)){
+                return this.wifiDirectDevicePeers;
+            }
+        }
+
+        return null;
+    }
+
+
     public void addPeer(BluetoothDevice device){
         bluetoothDevicePeers.add(device);
         btDevices.add(device.getAddress() + "/" + device.getName());

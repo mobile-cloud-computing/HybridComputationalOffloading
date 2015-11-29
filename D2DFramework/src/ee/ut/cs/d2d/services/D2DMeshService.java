@@ -28,8 +28,6 @@ public class D2DMeshService extends Service {
 	private final String TAG = D2DMeshService.class.getSimpleName();
 	
 	private final IBinder mBinder = new MyBinder();
-	
-	//D2DBluetooth btDevice = null;
 
 	NetworkDevice nDevice = null;
 
@@ -38,22 +36,11 @@ public class D2DMeshService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.d(TAG, "onStartCommand");
 		  
-		/*if (btDevice!=null){
-			Log.d(TAG, "discovery can be called without instantiation");
-			//OpportunisticDevices.getInstance().getOpportunisticDevices(); //contains the devices in proximity
-			
-			if (btDevice.getD2DBluetoothState().equals(btDevice.getD2DBluetoothIdle())){
-				btDevice.D2DDiscovery();
-			}
-			
-		}*/
 
 		if (nDevice!=null){
 			nDevice.D2DDiscovery();
 		}
 
-
-		
 		//it works as expected
 		//proper policies should be put in place
 		//works together with startScanScheduler(); 
@@ -86,19 +73,6 @@ public class D2DMeshService extends Service {
 		}
 
 	}
-	/*
-	public void btOn(){
-		btDevice.D2DOn();
-	}
-	
-	public void btOff(){
-		btDevice.D2DOff();
-	}
-	
-	public void btDiscovery(){
-		btDevice.D2DDiscovery();
-	}
-	*/
 
 	public void on(){
 		nDevice.D2DOn();
@@ -114,13 +88,6 @@ public class D2DMeshService extends Service {
 
 
 	public void setServiceContext(Context context, String nInterface){
-		/*if (btDevice==null){
-			Log.d(TAG, "device instance is null");
-			btDevice = new D2DBluetooth(context);
-			
-			//works together with stopScanScheduler() and forcedStop();
-			startScanScheduler();
-		}*/
 
 		if (nDevice==null){
 			Log.d(TAG, "device instance is null");
@@ -156,8 +123,6 @@ public class D2DMeshService extends Service {
  	    stopService(intentStop);
 	}
 
-	
-	
 	
 	/**
 	 * testing method

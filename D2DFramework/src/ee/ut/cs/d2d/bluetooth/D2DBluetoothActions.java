@@ -27,21 +27,18 @@ import android.util.Log;
 public class D2DBluetoothActions extends BroadcastReceiver{
 	
 	private final String TAG = D2DBluetoothActions.class.getSimpleName();
-	//public static ArrayList<BluetoothDevice> btDeviceList = new ArrayList<BluetoothDevice>();
-	//int cont;
-	
+
 	private Context context;
 
-	//private List<String> mDevices;
+
 	private DeviceData mDevices;
 	private DeviceListAdapter mListAdapter;
 	
 	
-	public D2DBluetoothActions(Context context, DeviceData mDevices, /*DeviceData mDevices,*/ DeviceListAdapter mListAdapter){
+	public D2DBluetoothActions(Context context, DeviceData mDevices, DeviceListAdapter mListAdapter){
 		this.context = context;
 		this.mDevices = mDevices;
 		this.mListAdapter = mListAdapter;
-		//cont = 0;
 	}
 	
 
@@ -74,16 +71,8 @@ public class D2DBluetoothActions extends BroadcastReceiver{
         	if(BluetoothDevice.ACTION_FOUND.equals(action)) {
         	       BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
         	       Log.d(TAG, "\n  Device: " + device.getName() + ", " + device);
-        	       
-        	       //btDeviceList.add(device);
-        	       //cont++;
 
-				  /*if (!mDevices.contains(device.getName())){
-					  mDevices.add(device.getName());
-					  mListAdapter.notifyDataSetChanged();
-				  }*/
-
-				  if (!mDevices.getPeers(Commons.bluetooth).contains(device.getAddress())){
+				  if (!mDevices.getDevicePeers(Commons.bluetooth).contains(device)){
 					  mDevices.addPeer(device);
 					  mListAdapter.notifyDataSetChanged();
 				  }
@@ -106,32 +95,13 @@ public class D2DBluetoothActions extends BroadcastReceiver{
         	         }else{
         	        	 if(BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
         	                 Log.d(TAG, "\nDiscovery Finished");
-        	                 //btDiscoveryFinished();
-        	                 
-        	                 
+
         	              }
         	         }
         	    }
         	}
         } 
     }
-	
-	
-	/*public static void clearDeviceList(){
-		btDeviceList.clear();
-	}
-	
-	public void btDiscoveryFinished(){
-		Intent intent = new Intent(D2DBluetoothDiscovery.BT_DISCOVERY_FINISHED);
-		intent.putExtra("IsProximal", cont);
-		intent.putExtra("IsFinish", true);
-		
-		cont = 0;
-	
-		context.sendBroadcast(intent);
-		
-	}*/
-	
 
 		
 }

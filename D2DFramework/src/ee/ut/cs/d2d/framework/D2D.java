@@ -63,8 +63,6 @@ public class D2D extends Activity{
 
 	//Contains the list of the peers in which the device can connect (D2D)
 	DeviceData D2DPeers;
-
-	//private List<String> mDevices;
 	private DeviceListAdapter mListAdapter;
 	private ListView mDeviceListView;
 
@@ -104,96 +102,22 @@ public class D2D extends Activity{
 		/**
 		 * List to show the devices available
 		 */
-		//mDevices = new ArrayList<String>();
-		//mListAdapter = new DeviceListAdapter(this, D2DPeers.getPeers(nDevice));
 		mListAdapter = new DeviceListAdapter(this, D2DPeers, nDevice);
 		mDeviceListView.setAdapter(mListAdapter);
 
-
+		/**
+		 * Bluetooth listener
+		 */
 
 		btReceiver = new D2DBluetoothActions(this, D2DPeers, mListAdapter);
 	    btAdapter = BluetoothAdapter.getDefaultAdapter();
-	     
-
-	    bluetooth = (ImageButton) findViewById(R.id.bluetoothButton);
-        bluetooth.setOnClickListener(new OnClickListener() {
-        	@Override
-			public void onClick(View v) {
-				try {
-					if (btAdapter.isEnabled()) {
-						if (meshService!=null){
-							//meshService.btOff();
-							meshService.off();
-						}else{
-							Log.d(TAG, "service is not connected");
-						}
-					
-					} else {
-						if (!btAdapter.isEnabled()){
-							if (meshService!=null){
-							//	meshService.btOn();
-							meshService.on();
-							}else{
-								Log.d(TAG, "service is not connected");
-							}
-						}
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		 });
-	     
-	     clean = (ImageButton) findViewById(R.id.cleanButton);
-	     clean.setOnClickListener(new OnClickListener() {
-			 @Override
-			 public void onClick(View v) {
-				 try {
-					 Toast.makeText(getBaseContext(), "Cleaning screen..", Toast.LENGTH_SHORT).show();
-
-
-				 } catch (Exception e) {
-					 e.printStackTrace();
-				 }
-			 }
-		 });
-	        
-	     log = (ImageButton) findViewById(R.id.logButton);
-		 log.setOnClickListener(new OnClickListener() {
-			 @Override
-			 public void onClick(View v) {
-				 try {
-					 Toast.makeText(getBaseContext(), "Showing logs..", Toast.LENGTH_SHORT).show();
-					 if (meshService != null) {
-						 //meshService.btDiscovery();
-
-						 Intent d2dLog = new Intent(D2D.this, D2DLog.class);
-						 startActivity(d2dLog);
-
-
-					 } else {
-						 Log.d(TAG, "service is not connected");
-					 }
-
-				 } catch (Exception e) {
-					 e.printStackTrace();
-				 }
-			 }
-		 });
-
 
 		registerBluetooth();
 
-	    
-	    BatteryProfiler bp = new BatteryProfiler(this);
-	    bp.getBatteryLevel();
 
-
-		//mDevices = new ArrayList<String>();
-		//mListAdapter = new DeviceListAdapter(this, mDevices);
-		//mDeviceListView.setAdapter(mListAdapter);
-
-
+		/**
+		 * WifiDirect listener
+		 */
 
 		wfManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
 		wfChannel = wfManager.initialize(this, getMainLooper(), null);
@@ -214,7 +138,7 @@ public class D2D extends Activity{
 					while(i.hasNext()){
 						WifiP2pDevice device = i.next();
 						//Log.d(TAG,device.deviceName);
-						if (!D2DPeers.getPeers(Commons.wifiDirect).contains(device)){
+						if (!D2DPeers.getDevicePeers(Commons.wifiDirect).contains(device)){
 							D2DPeers.addPeer(device);
 							if (nDevice.equals(Commons.wifiDirect)){
 								mListAdapter.notifyDataSetChanged();
@@ -254,15 +178,128 @@ public class D2D extends Activity{
 
 		registerWifiDirect();
 
+
+		/**
+		 * System profilers
+		 */
+
+		BatteryProfiler bp = new BatteryProfiler(this);
+		bp.getBatteryLevel();
+
+
+		/**
+		 * GUI buttons
+		 */
+		bluetooth = (ImageButton) findViewById(R.id.bluetoothButton);
+		bluetooth.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				try {
+					if (btAdapter.isEnabled()) {
+						if (meshService!=null){
+							//meshService.btOff();
+							meshService.off();
+						}else{
+							Log.d(TAG, "service is not connected");
+						}
+
+					} else {
+						if (!btAdapter.isEnabled()){
+							if (meshService!=null){
+								//	meshService.btOn();
+								meshService.on();
+							}else{
+								Log.d(TAG, "service is not connected");
+							}
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+
+		clean = (ImageButton) findViewById(R.id.cleanButton);
+		clean.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				try {
+					Toast.makeText(getBaseContext(), "Cleaning screen..", Toast.LENGTH_SHORT).show();
+
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+
+		log = (ImageButton) findViewById(R.id.logButton);
+		log.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				try {
+					Toast.makeText(getBaseContext(), "Showing logs..", Toast.LENGTH_SHORT).show();
+					if (meshService != null) {
+						//meshService.btDiscovery();
+
+						Intent d2dLog = new Intent(D2D.this, D2DLog.class);
+						startActivity(d2dLog);
+
+
+					} else {
+						Log.d(TAG, "service is not connected");
+					}
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+
+
+	}
+
+	/**
+	 * Native Android stuff
+	 */
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.d2_d, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		if (id == R.id.action_about) {
+			AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
+			dlgAlert.setMessage("This framework is part of the social-aware hybrid mobile offloading project.");
+			dlgAlert.setTitle("Device-to-Device Offloading");
+			dlgAlert.setPositiveButton("OK", null);
+			dlgAlert.setCancelable(true);
+			dlgAlert.create().show();
+
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 
+	/**
+	 * Helpers
+	 */
 	private void initViews() {
 		mDeviceListView = (ListView) findViewById(R.id.deviceList);
 
 	}
 
 
+	//Bluetooth filter
 	public void registerBluetooth(){
 		 IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
 	     filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
@@ -271,35 +308,22 @@ public class D2D extends Activity{
 	     filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
 		 registerReceiver(btReceiver, filter);
 	 }
-	 
-	 
-	 @Override
-	 public boolean onCreateOptionsMenu(Menu menu) {
-	     // Inflate the menu; this adds items to the action bar if it is present.
-	     getMenuInflater().inflate(R.menu.d2_d, menu); 
-	     return true;
-	 }
 
-	 @Override
-	 public boolean onOptionsItemSelected(MenuItem item) {
-	     // Handle action bar item clicks here. The action bar will
-	     // automatically handle clicks on the Home/Up button, so long
-	     // as you specify a parent activity in AndroidManifest.xml.
-	     int id = item.getItemId();
-	     if (id == R.id.action_about) {
-	     	AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
-	      	dlgAlert.setMessage("This framework is part of the social-aware hybrid mobile offloading project.");
-	       	dlgAlert.setTitle("Device-to-Device Offloading");
-	       	dlgAlert.setPositiveButton("OK", null);
-	       	dlgAlert.setCancelable(true);
-	       	dlgAlert.create().show();
-	       	
-	        return true;
-	      }
-	     return super.onOptionsItemSelected(item);
-	 }
+
+	//WifiDirect filter
+	public void registerWifiDirect(){
+		IntentFilter wfIntentFilter = new IntentFilter();
+		wfIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
+		wfIntentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
+		wfIntentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
+		wfIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
+
+		wfReceiver = new D2DWifiDirectActions(wfManager, wfChannel, /*this,*/ wfPeerListListener, wfPeerConnectionListener);
+
+		registerReceiver(wfReceiver, wfIntentFilter);
+	}
 	 
-	 
+
 	 @Override
 	 public void onResume(){
 		 super.onResume();
@@ -344,20 +368,6 @@ public class D2D extends Activity{
 			}
 	 };
 
-
-
-	//Wifi direct filter
-	public void registerWifiDirect(){
-		IntentFilter wfIntentFilter = new IntentFilter();
-		wfIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
-		wfIntentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
-		wfIntentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
-		wfIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
-
-		wfReceiver = new D2DWifiDirectActions(wfManager, wfChannel, /*this,*/ wfPeerListListener, wfPeerConnectionListener);
-
-		registerReceiver(wfReceiver, wfIntentFilter);
-	}
 
 
 
