@@ -18,6 +18,7 @@ import ee.ut.cs.d2d.profilers.BatteryProfiler;
 import ee.ut.cs.d2d.services.D2DMeshService;
 import ee.ut.cs.d2d.utilities.Commons;
 import ee.ut.cs.d2d.wifidirect.D2DWifiDirectActions;
+import ee.ut.cs.d2d.wifidirect.D2DWifiDirectConnection;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -40,6 +41,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -59,7 +61,7 @@ public class D2D extends Activity{
 	private final String TAG = D2D.class.getSimpleName();
 
 	//Network device to be used, e.g., wifiDirect or blueetooth
-	private String nDevice = Commons.bluetooth;
+	private String nDevice = Commons.wifiDirect;
 
 	//Contains the list of the peers in which the device can connect (D2D)
 	DeviceData D2DPeers;
@@ -257,6 +259,37 @@ public class D2D extends Activity{
 		});
 
 
+		/**
+		 * Device pairing by user
+		 */
+
+		mDeviceListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+									long id) {
+
+				String peer =	(String) parent.getItemAtPosition(position);
+				String[] separated = peer.split("/");
+
+				String peerAddress = separated[0];
+				//Log.d(TAG, peerAddress);
+
+				if (nDevice.equals(Commons.bluetooth)){ //connect to peer using bluetooth
+					BluetoothDevice btPeer = (BluetoothDevice) D2DPeers.searchForPeer(peerAddress ,nDevice);
+					//Log.d(TAG, "connect using: " + btPeer.getAddress() + "," + btPeer.getBondState());
+
+
+				}else{
+					if (nDevice.equals(Commons.wifiDirect)){ //connect to peer using wifidirect
+						WifiP2pDevice wfPeer = (WifiP2pDevice) D2DPeers.searchForPeer(peerAddress, nDevice);
+						//Log.d(TAG, "connect using: " + wfPeer.deviceName + "," + wfPeer.status);
+
+						new D2DWifiDirectConnection(D2D.this, wfManager, wfChannel, wfPeer).connect();
+					}
+				}
+
+			}
+		});
 	}
 
 	/**
@@ -405,8 +438,6 @@ public class D2D extends Activity{
 
 
 	}
-
-
 
 
 }
