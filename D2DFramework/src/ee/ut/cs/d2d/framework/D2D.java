@@ -60,10 +60,10 @@ public class D2D extends Activity{
 	
 	private final String TAG = D2D.class.getSimpleName();
 
-	//Network device to be used, e.g., wifiDirect or blueetooth
+	//Network device to be used, e.g., WifiDirect or Blueetooth
 	private String nDevice = Commons.wifiDirect;
 
-	//Contains the list of the peers in which the device can connect (D2D)
+	//Contains the list of the peers in which the device can connect (D2D), both WifiDirect and Bluetooth
 	DeviceData D2DPeers;
 	private DeviceListAdapter mListAdapter;
 	private ListView mDeviceListView;
@@ -274,7 +274,7 @@ public class D2D extends Activity{
 				String peerAddress = separated[0];
 				//Log.d(TAG, peerAddress);
 
-				if (nDevice.equals(Commons.bluetooth)){ //connect to peer using bluetooth
+				if (nDevice.equals(Commons.bluetooth)){ //connect to peer using Bluetooth
 					BluetoothDevice btPeer = (BluetoothDevice) D2DPeers.searchForPeer(peerAddress ,nDevice);
 					//Log.d(TAG, "connect using: " + btPeer.getAddress() + "," + btPeer.getBondState());
 
