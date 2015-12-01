@@ -12,13 +12,13 @@
 package ee.ut.cs.d2d.framework;
 
 import ee.ut.cs.d2d.bluetooth.D2DBluetoothActions;
+import ee.ut.cs.d2d.communication.D2DWifiDirectConnection;
 import ee.ut.cs.d2d.data.DeviceData;
 import ee.ut.cs.d2d.data.DeviceListAdapter;
-import ee.ut.cs.d2d.profilers.BatteryProfiler;
+import ee.ut.cs.d2d.hybridoffloading.task.Queens;
 import ee.ut.cs.d2d.services.D2DMeshService;
 import ee.ut.cs.d2d.utilities.Commons;
 import ee.ut.cs.d2d.wifidirect.D2DWifiDirectActions;
-import ee.ut.cs.d2d.wifidirect.D2DWifiDirectConnection;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -29,7 +29,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.net.wifi.WifiManager;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pInfo;
@@ -77,8 +76,8 @@ public class D2D extends Activity{
 	WifiP2pManager.Channel wfChannel;
 	D2DWifiDirectActions wfReceiver;
 	WifiP2pManager.PeerListListener wfPeerListListener;
-	private List peers = new ArrayList();
 	WifiP2pManager.ConnectionInfoListener wfPeerConnectionListener;
+	private List peers = new ArrayList();
 
 	//Bluetooth and WifiDirect services are provided by this service
 	private D2DMeshService meshService;
@@ -90,6 +89,10 @@ public class D2D extends Activity{
 	private ImageButton bluetooth;
 	private ImageButton clean;
 	private ImageButton log;
+
+	IntentFilter wfIntentFilter, btIntentFilter;
+
+	Activity activity = this;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -154,27 +157,32 @@ public class D2D extends Activity{
 		};
 
 
+
+
 		wfPeerConnectionListener = new WifiP2pManager.ConnectionInfoListener(){
 
 			@Override
 			public void onConnectionInfoAvailable(WifiP2pInfo info) {
 				try {
-					InetAddress groupOwnerAddress = InetAddress.getByName(info.groupOwnerAddress.getHostAddress());
+				InetAddress groupOwnerAddress = InetAddress.getByName(info.groupOwnerAddress.getHostAddress());
 
 
-					if (info.groupFormed && info.isGroupOwner){
-						System.out.println("This device acts as client");
-					}else{
-						if (info.groupFormed){
-							System.out.println("Other device acts as client");
-						}
+				if (info.groupFormed && info.isGroupOwner){
+					Log.d(TAG, "This device is the Group Owner (Server role)"); //Group Owner (GO) is the Access Point (AP)
+
+
+				}else{
+					if (info.groupFormed){
+						Log.d(TAG, "This device is a client (Client role) and it should connect to the Group Owner");
 					}
+				}
 
 				} catch (UnknownHostException e) {
 					e.printStackTrace();
 				}
 
 			}
+
 
 		};
 
@@ -185,8 +193,8 @@ public class D2D extends Activity{
 		 * System profilers
 		 */
 
-		BatteryProfiler bp = new BatteryProfiler(this);
-		bp.getBatteryLevel();
+		//BatteryProfiler bp = new BatteryProfiler(this);
+		//bp.getBatteryLevel();
 
 
 		/**
@@ -262,7 +270,6 @@ public class D2D extends Activity{
 		/**
 		 * Device pairing by user
 		 */
-
 		mDeviceListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position,
@@ -284,7 +291,10 @@ public class D2D extends Activity{
 						WifiP2pDevice wfPeer = (WifiP2pDevice) D2DPeers.searchForPeer(peerAddress, nDevice);
 						//Log.d(TAG, "connect using: " + wfPeer.deviceName + "," + wfPeer.status);
 
-						new D2DWifiDirectConnection(D2D.this, wfManager, wfChannel, wfPeer).connect();
+						//change to runnable
+						new Thread(
+								new D2DWifiDirectConnection(D2D.this, wfManager, wfChannel, wfPeer, wfPeerConnectionListener)
+						).start();
 					}
 				}
 
@@ -334,26 +344,26 @@ public class D2D extends Activity{
 
 	//Bluetooth filter
 	public void registerBluetooth(){
-		 IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-	     filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
-	     filter.addAction(BluetoothDevice.ACTION_UUID);
-	     filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
-	     filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-		 registerReceiver(btReceiver, filter);
+		 btIntentFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+	     btIntentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+	     btIntentFilter.addAction(BluetoothDevice.ACTION_UUID);
+	     btIntentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+	     btIntentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+		 registerReceiver(btReceiver, btIntentFilter);
 	 }
 
 
 	//WifiDirect filter
 	public void registerWifiDirect(){
-		IntentFilter wfIntentFilter = new IntentFilter();
+		wfIntentFilter = new IntentFilter();
 		wfIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
 		wfIntentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
 		wfIntentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
 		wfIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
 
-		wfReceiver = new D2DWifiDirectActions(wfManager, wfChannel, /*this,*/ wfPeerListListener, wfPeerConnectionListener);
+		wfReceiver = new D2DWifiDirectActions(wfManager, wfChannel, /*activity, */ wfPeerListListener, wfPeerConnectionListener);
 
-		registerReceiver(wfReceiver, wfIntentFilter);
+
 	}
 	 
 
@@ -364,13 +374,16 @@ public class D2D extends Activity{
 	     Intent intent= new Intent(this, D2DMeshService.class);
 	     bindService(intent, meshConnection, Context.BIND_AUTO_CREATE);
 
+		 registerReceiver(btReceiver, btIntentFilter);
+		 registerReceiver(wfReceiver, wfIntentFilter);
+
 	 }
 	 
 	 @Override
 	 public void onDestroy() {
 		super.onDestroy();
 		unregisterReceiver(btReceiver);
-		 unregisterReceiver(wfReceiver);
+		unregisterReceiver(wfReceiver);
 	 }
 
 	 @Override
@@ -378,6 +391,23 @@ public class D2D extends Activity{
 		 super.onPause();
 
 		 unbindService(meshConnection);
+	 }
+
+     @Override
+	 public void onStop(){
+		 if (wfManager != null && wfChannel != null) {
+			 wfManager.removeGroup(wfChannel, new WifiP2pManager.ActionListener() {
+				 @Override
+				 public void onFailure(int reasonCode) {
+					 Log.d(TAG, "Disconnect failed. Reason :" + reasonCode);
+				 }
+				 @Override
+				 public void onSuccess() {
+				 }
+			 });
+		 }
+
+		 super.onStop();
 	 }
 
 
@@ -421,7 +451,8 @@ public class D2D extends Activity{
 
 			case R.id.testButton:
 
-				WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+				//move to the right place in the GUI
+				/*WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 
 				boolean wifiEnabled = wifiManager.isWifiEnabled();
 
@@ -429,7 +460,13 @@ public class D2D extends Activity{
 					meshService.off();
 				}else{
 					meshService.on();
-				}
+				}*/
+
+
+				//computational task to offload
+				new Thread(
+						new Queens(Queens.N)
+				).start();
 
 
 				break;

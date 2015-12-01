@@ -4,7 +4,7 @@
     <string name="app_name">D2D Framework</string>
     <string name="action_about">About</string>
     <string name="discover">Manual Discovery</string>
-    <string name="test">Test and Automatic Discovery</string>
+    <string name="test">Test hybrid offloading</string>
     
 
 </resources>

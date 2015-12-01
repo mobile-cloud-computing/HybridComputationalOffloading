@@ -1,10 +1,12 @@
 package ee.ut.cs.d2d.wifidirect;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.NetworkInfo;
 import android.net.wifi.p2p.WifiP2pManager;
+import android.util.Log;
 
 
 /**
@@ -12,20 +14,25 @@ import android.net.wifi.p2p.WifiP2pManager;
  */
 public class D2DWifiDirectActions extends BroadcastReceiver {
 
+    private final String TAG = D2DWifiDirectActions.class.getSimpleName();
+
+
     private WifiP2pManager mManager;
     private WifiP2pManager.Channel mChannel;
-    //private D2DWifi mActivity;
+    //private Activity mActivity;
 
     WifiP2pManager.PeerListListener mPeerListListener;
     WifiP2pManager.ConnectionInfoListener mPeerConnectionListener;
 
-    public D2DWifiDirectActions(WifiP2pManager manager, WifiP2pManager.Channel channel, /*D2DWifi activity,*/ WifiP2pManager.PeerListListener mPeerListListener, WifiP2pManager.ConnectionInfoListener mPeerConnectionListener) {
+    public D2DWifiDirectActions(WifiP2pManager manager, WifiP2pManager.Channel channel, /*Activity activity,*/ WifiP2pManager.PeerListListener mPeerListListener,WifiP2pManager.ConnectionInfoListener mPeerConnectionListener) {
         super();
         this.mManager = manager;
         this.mChannel = channel;
         //this.mActivity = activity;
         this.mPeerListListener = mPeerListListener;
         this.mPeerConnectionListener = mPeerConnectionListener;
+
+
     }
 
     @Override
@@ -38,10 +45,10 @@ public class D2DWifiDirectActions extends BroadcastReceiver {
             int state = intent.getIntExtra(WifiP2pManager.EXTRA_WIFI_STATE, -1);
             if (state == WifiP2pManager.WIFI_P2P_STATE_ENABLED) {
                 // Wifi P2P is enabled
-                System.out.println("Wifi direct is enabled");
+                Log.d(TAG, "Wifi direct is enabled");
             } else {
                 // Wi-Fi P2P is not enabled
-                System.out.println("Wifi direct is not enabled");
+                Log.d(TAG, "Wifi direct is not enabled");
             }
 
         } else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
@@ -66,7 +73,7 @@ public class D2DWifiDirectActions extends BroadcastReceiver {
             }
 
             if (networkInfo.isConnected()){
-                System.out.println("This device is connected with other device");
+                Log.d(TAG, "This device is connected with other device");
 
                 mManager.requestConnectionInfo(mChannel, mPeerConnectionListener);
             }else{

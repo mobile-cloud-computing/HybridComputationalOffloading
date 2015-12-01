@@ -73,7 +73,16 @@
         <receiver android:name="ee.ut.cs.d2d.services.D2DScanService" android:enabled="true">
         </receiver>
 
-         
+
+        <!--
+        <receiver android:name="D2DWifiDirectActions"> %needs defaul blank constructor to be defined here
+            <action android:name="android.net.wifi.p2p.PEERS_CHANGED"/>
+            <action android:name="android.net.wifi.p2p.STATE_CHANGED"/>
+            <action android:name="android.net.wifi.p2p.THIS_DEVICE_CHANGED"/>
+            <action android:name="android.net.wifi.p2p.android.net.wifi.p2p.CONNECTION_STATE_CHANGE"/>
+        </receiver>-->
+
+
     </application>
     
    
