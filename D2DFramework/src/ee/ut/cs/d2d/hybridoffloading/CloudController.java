@@ -9,10 +9,14 @@
 
 package ee.ut.cs.d2d.hybridoffloading;
 
+import android.util.Log;
+
 import java.lang.reflect.Method;
 import java.util.Vector;
 
 public class CloudController {
+    private final String TAG = CloudController.class.getSimpleName();
+
     private NetworkManagerClient NM = null;
     byte[] IPAddress = new byte[4];  // cloud address
     int port;                        // cloud port
@@ -27,6 +31,8 @@ public class CloudController {
         IPAddress[1] = NetInfo.IPAddress[1];
         IPAddress[2] = NetInfo.IPAddress[2];
         IPAddress[3] = NetInfo.IPAddress[3];
+
+        Log.d(TAG, IPAddress[0] + "." + IPAddress[1] + "." + IPAddress[2] + "." + IPAddress[3]);
     }
 
     public Vector execute(Method toExecute, Object[] paramValues, Object state, Class stateDataType) {

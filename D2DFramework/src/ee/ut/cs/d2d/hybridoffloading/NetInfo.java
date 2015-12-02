@@ -13,7 +13,8 @@ public class NetInfo{
 
 	//The communication negotiation of each particular interface, e.g., bluetooth, wifidirect, etc., it assigns the IP address and port automatically
 	//Those values are centralized here in order to accessed by the mobile app.
-	public static byte[] IPAddress =  {Integer.valueOf("127").byteValue(),Integer.valueOf("0").byteValue(),Integer.valueOf("0").byteValue(),Integer.valueOf("1").byteValue()};
+	//public static byte[] IPAddress =  {Integer.valueOf("127").byteValue(),Integer.valueOf("0").byteValue(),Integer.valueOf("0").byteValue(),Integer.valueOf("1").byteValue()};
+	public static byte[] IPAddress =  {Integer.valueOf("192").byteValue(),Integer.valueOf("168").byteValue(),Integer.valueOf("49").byteValue(),Integer.valueOf("1").byteValue()};
 
 	//Choosen as default port
 	public static int port = 6000;

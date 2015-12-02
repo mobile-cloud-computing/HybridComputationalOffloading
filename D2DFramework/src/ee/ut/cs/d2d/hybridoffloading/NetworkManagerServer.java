@@ -9,6 +9,8 @@
 
 package ee.ut.cs.d2d.hybridoffloading;
 
+import android.util.Log;
+
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.net.*;
@@ -19,6 +21,8 @@ import java.lang.reflect.Method;
 
 
 public class NetworkManagerServer {
+    private final String TAG = NetworkManagerServer.class.getSimpleName();
+
     int portnum;
     Socket mysocket = null;
     InputStream in = null;
@@ -51,7 +55,7 @@ public class NetworkManagerServer {
 
 
         try {
-            //System.out.println("server waiting");
+            Log.d(TAG, "server waiting");
             mysocket = serversoc.accept();
             
             in =  mysocket.getInputStream();

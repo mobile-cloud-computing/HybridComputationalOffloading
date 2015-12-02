@@ -104,7 +104,8 @@ public class D2DWifiDirectManager {
 
                 if (info.groupFormed && info.isGroupOwner){
                     Log.d(TAG, "This device is the Group Owner (Server role)"); //Group Owner (GO) is the Access Point (AP)
-                    new NetworkManagerServer(NetInfo.port);
+                    NetworkManagerServer nm = new NetworkManagerServer(NetInfo.port);
+                    nm.makeconnection();
 
                 }else{
                     if (info.groupFormed){
