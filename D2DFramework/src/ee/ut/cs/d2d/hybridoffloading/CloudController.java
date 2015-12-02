@@ -50,18 +50,18 @@ public class CloudController {
             
             try {
                 waitob.wait(NetInfo.waitTime);
-                System.out.println("Esperando");
+                //System.out.println("Esperando");
             } catch (InterruptedException e) {
             }
             
             if(this.state != null){
-            	System.out.println("Termino de esperar con resultado");
+            	System.out.println("Finished offloaded task");
                 results.removeAllElements();
                 results.add(this.result);
                 results.add(this.state);
                 return results;
             }else{
-            	System.out.println("Termino de esperar sin resultado");
+            	System.out.println("Finished, but offloaded task result was not obtained");
                 return null;
             }
         }
