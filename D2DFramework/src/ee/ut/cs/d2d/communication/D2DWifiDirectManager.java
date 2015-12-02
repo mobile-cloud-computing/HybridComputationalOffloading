@@ -2,8 +2,6 @@ package ee.ut.cs.d2d.communication;
 
 import android.content.Context;
 import android.content.IntentFilter;
-import android.net.wifi.WpsInfo;
-import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pInfo;
@@ -18,9 +16,8 @@ import java.util.List;
 
 import ee.ut.cs.d2d.data.DeviceData;
 import ee.ut.cs.d2d.data.DeviceListAdapter;
-import ee.ut.cs.d2d.hybridoffloading.Main;
+import ee.ut.cs.d2d.hybridoffloading.SurrogateActivator;
 import ee.ut.cs.d2d.hybridoffloading.NetInfo;
-import ee.ut.cs.d2d.hybridoffloading.NetworkManagerServer;
 import ee.ut.cs.d2d.utilities.Commons;
 import ee.ut.cs.d2d.wifidirect.D2DWifiDirectActions;
 
@@ -108,7 +105,7 @@ public class D2DWifiDirectManager {
                     /*NetworkManagerServer nm = new NetworkManagerServer(NetInfo.port);
                     nm.makeconnection();*/
 
-                    Main server = new Main();
+                    SurrogateActivator server = new SurrogateActivator();
                     server.initiate();
 
                 }else{

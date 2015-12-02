@@ -12,14 +12,14 @@ package ee.ut.cs.d2d.hybridoffloading;
 
 import android.os.AsyncTask;
 
-public class Main {
+public class SurrogateActivator {
 
     /*public static void main(String[] args) {
         NetworkManagerServer nm = new NetworkManagerServer(NetInfo.port);
         nm.makeconnection();
     }*/
 
-    public Main(){
+    public SurrogateActivator(){
 
     }
 
