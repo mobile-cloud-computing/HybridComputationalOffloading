@@ -12,5 +12,5 @@ package ee.ut.cs.d2d.hybridoffloading;
 
 
 
-public @interface Cloud {
+public @interface Hybrid {
 }

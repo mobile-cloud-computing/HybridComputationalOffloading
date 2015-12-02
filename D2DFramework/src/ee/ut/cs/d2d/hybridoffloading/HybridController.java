@@ -14,8 +14,8 @@ import android.util.Log;
 import java.lang.reflect.Method;
 import java.util.Vector;
 
-public class CloudController {
-    private final String TAG = CloudController.class.getSimpleName();
+public class HybridController {
+    private final String TAG = HybridController.class.getSimpleName();
 
     private NetworkManagerClient NM = null;
     byte[] IPAddress = new byte[4];  // cloud address
@@ -25,7 +25,7 @@ public class CloudController {
     final Object waitob = new Object();
     Vector results = new Vector();
 
-    public CloudController(){
+    public HybridController(){
         port = NetInfo.port;
         IPAddress[0] = NetInfo.IPAddress[0];
         IPAddress[1] = NetInfo.IPAddress[1];

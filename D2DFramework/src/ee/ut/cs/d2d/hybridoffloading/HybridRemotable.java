@@ -12,22 +12,22 @@ package ee.ut.cs.d2d.hybridoffloading;
 
 import java.io.Serializable;
 
-public abstract class CloudRemotable implements Serializable  {
+public abstract class HybridRemotable implements Serializable  {
     private static final long serialVersionUID = 3;
-    transient protected CloudController cloudController = new CloudController();
+    transient protected HybridController cloudController = new HybridController();
 
-    protected CloudRemotable() {
+    protected HybridRemotable() {
     }
 
-    public CloudRemotable(CloudController cc) {
+    public HybridRemotable(HybridController cc) {
         cloudController = cc;
     }
 
-    public CloudController getCloudController() {
+    public HybridController getCloudController() {
         return cloudController;
     }
 
-    public void setCloudController(CloudController cloudController) {
+    public void setCloudController(HybridController cloudController) {
         this.cloudController = cloudController;
     }
 

@@ -27,7 +27,7 @@ public class NetworkManagerClient {
     ObjectInputStream ois = null;
     ObjectOutputStream oos = null;
     byte []serverAddress =new byte[4];
-    CloudController callingparent = null;
+    HybridController callingparent = null;
     long startTime = 0;
 
     public NetworkManagerClient(byte[] serverAddress, int port) {
@@ -36,7 +36,7 @@ public class NetworkManagerClient {
         portnum = port;
     }
 
-    public void setNmf(CloudController callingparent) {
+    public void setNmf(HybridController callingparent) {
         this.callingparent = callingparent;
     }
 

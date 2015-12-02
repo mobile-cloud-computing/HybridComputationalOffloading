@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 import java.util.Vector;
 
 
-public class Queens extends CloudRemotable implements Runnable {
+public class Queens extends HybridRemotable implements Runnable {
 
     static final String TAG = Queens.class.getSimpleName();
 
