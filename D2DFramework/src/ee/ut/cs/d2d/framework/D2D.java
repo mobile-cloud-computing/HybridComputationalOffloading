@@ -13,6 +13,7 @@ package ee.ut.cs.d2d.framework;
 
 import ee.ut.cs.d2d.bluetooth.D2DBluetoothActions;
 import ee.ut.cs.d2d.communication.D2DWifiDirectConnection;
+import ee.ut.cs.d2d.communication.D2DWifiDirectManager;
 import ee.ut.cs.d2d.data.DeviceData;
 import ee.ut.cs.d2d.data.DeviceListAdapter;
 import ee.ut.cs.d2d.hybridoffloading.task.Queens;
@@ -74,10 +75,10 @@ public class D2D extends Activity{
 	//WifiDirect implementation
 	WifiP2pManager wfManager;
 	WifiP2pManager.Channel wfChannel;
-	D2DWifiDirectActions wfReceiver;
+	/*D2DWifiDirectActions wfReceiver;
 	WifiP2pManager.PeerListListener wfPeerListListener;
 	WifiP2pManager.ConnectionInfoListener wfPeerConnectionListener;
-	private List peers = new ArrayList();
+	private List peers = new ArrayList();*/
 
 	//Bluetooth and WifiDirect services are provided by this service
 	private D2DMeshService meshService;
@@ -90,9 +91,11 @@ public class D2D extends Activity{
 	private ImageButton clean;
 	private ImageButton log;
 
-	IntentFilter wfIntentFilter, btIntentFilter;
+	IntentFilter /*wfIntentFilter,*/ btIntentFilter;
 
 	Activity activity = this;
+
+	D2DWifiDirectManager wfD2DManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +131,9 @@ public class D2D extends Activity{
 		wfChannel = wfManager.initialize(this, getMainLooper(), null);
 
 
-		wfPeerListListener = new WifiP2pManager.PeerListListener() {
+		wfD2DManager = new D2DWifiDirectManager(context, D2DPeers, wfManager, wfChannel, mListAdapter);
+
+		/*wfPeerListListener = new WifiP2pManager.PeerListListener() {
 			@Override
 			public void onPeersAvailable(WifiP2pDeviceList peerList) {
 				System.out.println("Listening for devices...");
@@ -184,9 +189,9 @@ public class D2D extends Activity{
 			}
 
 
-		};
+		};*/
 
-		registerWifiDirect();
+		//registerWifiDirect();
 
 
 		/**
@@ -292,9 +297,11 @@ public class D2D extends Activity{
 						//Log.d(TAG, "connect using: " + wfPeer.deviceName + "," + wfPeer.status);
 
 						//change to runnable
-						new Thread(
+						/*new Thread(
 								new D2DWifiDirectConnection(D2D.this, wfManager, wfChannel, wfPeer, wfPeerConnectionListener)
-						).start();
+						).start();*/
+
+						wfD2DManager.connect(wfPeer);
 					}
 				}
 
@@ -354,28 +361,29 @@ public class D2D extends Activity{
 
 
 	//WifiDirect filter
-	public void registerWifiDirect(){
+	/*public void registerWifiDirect(){
 		wfIntentFilter = new IntentFilter();
 		wfIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
 		wfIntentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
 		wfIntentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
 		wfIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
 
-		wfReceiver = new D2DWifiDirectActions(wfManager, wfChannel, /*activity, */ wfPeerListListener, wfPeerConnectionListener);
+		wfReceiver = new D2DWifiDirectActions(wfManager, wfChannel, wfPeerListListener, wfPeerConnectionListener);
 
 
-	}
+	}*/
 	 
 
 	 @Override
-	 public void onResume(){
+	 public void onResume() {
 		 super.onResume();
 
 	     Intent intent= new Intent(this, D2DMeshService.class);
-	     bindService(intent, meshConnection, Context.BIND_AUTO_CREATE);
+		 bindService(intent, meshConnection, Context.BIND_AUTO_CREATE);
 
 		 registerReceiver(btReceiver, btIntentFilter);
-		 registerReceiver(wfReceiver, wfIntentFilter);
+		 //registerReceiver(wfReceiver, wfIntentFilter);
+		 wfD2DManager.registerWifiDirect();
 
 	 }
 	 
@@ -383,7 +391,8 @@ public class D2D extends Activity{
 	 public void onDestroy() {
 		super.onDestroy();
 		unregisterReceiver(btReceiver);
-		unregisterReceiver(wfReceiver);
+		//unregisterReceiver(wfReceiver);
+		 wfD2DManager.unregisterWifiDirect();
 	 }
 
 	 @Override
