@@ -111,6 +111,8 @@ public class D2DWifiDirectManager {
                 }else{
                     if (info.groupFormed){
                         Log.d(TAG, "This device is a client (Client role) and it should connect to the Group Owner");
+
+                        //Code offload request is started by the portion of code executed during runtime
                     }
                 }
 

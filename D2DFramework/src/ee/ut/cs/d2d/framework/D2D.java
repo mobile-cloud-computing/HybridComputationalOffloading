@@ -12,6 +12,7 @@
 package ee.ut.cs.d2d.framework;
 
 import ee.ut.cs.d2d.bluetooth.D2DBluetoothActions;
+import ee.ut.cs.d2d.communication.D2DBluetoothManager;
 import ee.ut.cs.d2d.communication.D2DWifiDirectConnection;
 import ee.ut.cs.d2d.communication.D2DWifiDirectManager;
 import ee.ut.cs.d2d.data.DeviceData;
@@ -69,12 +70,14 @@ public class D2D extends Activity{
 	private ListView mDeviceListView;
 
 	//Blueetooth implementation
-	D2DBluetoothActions btReceiver;
+	//D2DBluetoothActions btReceiver;
 	private BluetoothAdapter btAdapter;
+	D2DBluetoothManager btD2DManager;
 
 	//WifiDirect implementation
 	WifiP2pManager wfManager;
 	WifiP2pManager.Channel wfChannel;
+	D2DWifiDirectManager wfD2DManager;
 	/*D2DWifiDirectActions wfReceiver;
 	WifiP2pManager.PeerListListener wfPeerListListener;
 	WifiP2pManager.ConnectionInfoListener wfPeerConnectionListener;
@@ -91,11 +94,11 @@ public class D2D extends Activity{
 	private ImageButton clean;
 	private ImageButton log;
 
-	IntentFilter /*wfIntentFilter,*/ btIntentFilter;
+	//IntentFilter wfIntentFilter, btIntentFilter;
 
-	Activity activity = this;
+	//Activity activity = this;
 
-	D2DWifiDirectManager wfD2DManager;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -117,10 +120,12 @@ public class D2D extends Activity{
 		 * Bluetooth listener
 		 */
 
-		btReceiver = new D2DBluetoothActions(this, D2DPeers, mListAdapter);
+		//btReceiver = new D2DBluetoothActions(this, D2DPeers, mListAdapter);
 	    btAdapter = BluetoothAdapter.getDefaultAdapter();
 
-		registerBluetooth();
+		btD2DManager = new D2DBluetoothManager(context, btAdapter, D2DPeers, mListAdapter);
+
+		//registerBluetooth();
 
 
 		/**
@@ -350,14 +355,14 @@ public class D2D extends Activity{
 
 
 	//Bluetooth filter
-	public void registerBluetooth(){
+	/*public void registerBluetooth(){
 		 btIntentFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
 	     btIntentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
 	     btIntentFilter.addAction(BluetoothDevice.ACTION_UUID);
 	     btIntentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
 	     btIntentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
 		 registerReceiver(btReceiver, btIntentFilter);
-	 }
+	 }*/
 
 
 	//WifiDirect filter
@@ -381,8 +386,9 @@ public class D2D extends Activity{
 	     Intent intent= new Intent(this, D2DMeshService.class);
 		 bindService(intent, meshConnection, Context.BIND_AUTO_CREATE);
 
-		 registerReceiver(btReceiver, btIntentFilter);
+		 //registerReceiver(btReceiver, btIntentFilter);
 		 //registerReceiver(wfReceiver, wfIntentFilter);
+		 btD2DManager.registerBluetooth();
 		 wfD2DManager.registerWifiDirect();
 
 	 }
@@ -390,8 +396,9 @@ public class D2D extends Activity{
 	 @Override
 	 public void onDestroy() {
 		super.onDestroy();
-		unregisterReceiver(btReceiver);
+		//unregisterReceiver(btReceiver);
 		//unregisterReceiver(wfReceiver);
+		 btD2DManager.unregisterBluetooth();
 		 wfD2DManager.unregisterWifiDirect();
 	 }
 
