@@ -128,16 +128,16 @@ public class NetworkManagerServer {
                 paramValues = myPack.getparamValues();
                 state = myPack.getstate();
                 stateDType = myPack.getstateType();
-                timestamps = myPack.getTimeStamps();
+                //timestamps = myPack.getTimeStamps();
                 
                 
                 if (functionName != null && functionName.length() > 0) {
                     try {
 
-                    	System.out.println("trying to load and execute");
+                    	Log.d(TAG, "trying to load and execute");
                         Class cls = Class.forName(stateDType.getName());
                         
-                        timestamps.add(processTime+",server1");
+                        //timestamps.add(processTime+",server1");
                         
                         /*System.out.println(""+stateDType.getName());
                         
@@ -168,7 +168,7 @@ public class NetworkManagerServer {
                         		oos.flush();
                         		Object result = method.invoke(state, paramValues);
                         		ResultPack rp = new ResultPack(result, state);
-                        		rp.setTimeStamps(timestamps);
+                        		//rp.setTimeStamps(timestamps);
                         		
                         		//System.out.println("Size in bytes: " + sizeInBytes(rp));
                         		oos.flush();
@@ -176,8 +176,8 @@ public class NetworkManagerServer {
                         		//System.out.println("Object wrote it");
                         		oos.flush(); 
                         		//System.out.println("Object executed and flushed: " + (System.currentTimeMillis() - processTime));
-                        		
 
+                                Log.d(TAG, "Object executed and flushed:");
 
                         	
                    
