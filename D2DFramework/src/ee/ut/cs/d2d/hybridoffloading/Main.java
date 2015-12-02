@@ -10,11 +10,44 @@
 package ee.ut.cs.d2d.hybridoffloading;
 
 
+import android.os.AsyncTask;
+
 public class Main {
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         NetworkManagerServer nm = new NetworkManagerServer(NetInfo.port);
         nm.makeconnection();
+    }*/
+
+    public Main(){
+
+    }
+
+    public void initiate(){
+        new ListenInBackground().execute("");
+    }
+
+    private class ListenInBackground extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            NetworkManagerServer nm = new NetworkManagerServer(NetInfo.port);
+            nm.makeconnection();
+
+            return "Executed";
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+        }
+
+        @Override
+        protected void onPreExecute() {}
+
+        @Override
+        protected void onProgressUpdate(Void... values) {}
     }
 
 }

@@ -18,6 +18,7 @@ import java.util.List;
 
 import ee.ut.cs.d2d.data.DeviceData;
 import ee.ut.cs.d2d.data.DeviceListAdapter;
+import ee.ut.cs.d2d.hybridoffloading.Main;
 import ee.ut.cs.d2d.hybridoffloading.NetInfo;
 import ee.ut.cs.d2d.hybridoffloading.NetworkManagerServer;
 import ee.ut.cs.d2d.utilities.Commons;
@@ -104,8 +105,11 @@ public class D2DWifiDirectManager {
 
                 if (info.groupFormed && info.isGroupOwner){
                     Log.d(TAG, "This device is the Group Owner (Server role)"); //Group Owner (GO) is the Access Point (AP)
-                    NetworkManagerServer nm = new NetworkManagerServer(NetInfo.port);
-                    nm.makeconnection();
+                    /*NetworkManagerServer nm = new NetworkManagerServer(NetInfo.port);
+                    nm.makeconnection();*/
+
+                    Main server = new Main();
+                    server.initiate();
 
                 }else{
                     if (info.groupFormed){
