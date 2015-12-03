@@ -211,7 +211,7 @@ public class D2D extends Activity{
 				if (nDevice.equals(Commons.bluetooth)){ //connect to peer using Bluetooth
 					BluetoothDevice btPeer = (BluetoothDevice) D2DPeers.searchForPeer(peerAddress ,nDevice);
 					//Log.d(TAG, "connect using: " + btPeer.getAddress() + "," + btPeer.getBondState());
-
+						btD2DManager.connect(btPeer);
 
 				}else{
 					if (nDevice.equals(Commons.wifiDirect)){ //connect to peer using wifidirect
@@ -345,7 +345,7 @@ public class D2D extends Activity{
 			case R.id.discoverButton:
 
 				//to test manual discovery
-				//meshService.discovery();
+				meshService.discovery();
 
 				break;
 

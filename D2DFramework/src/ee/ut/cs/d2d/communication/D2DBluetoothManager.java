@@ -56,4 +56,11 @@ public class D2DBluetoothManager {
         context.unregisterReceiver(btReceiver);
     }
 
+    public void connect(BluetoothDevice btDevice){
+        new Thread(
+                new D2DBluetoothConnection(btAdapter, btDevice)
+        ).start();
+
+    }
+
 }
