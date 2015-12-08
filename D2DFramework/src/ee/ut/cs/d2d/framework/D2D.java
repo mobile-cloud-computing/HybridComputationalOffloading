@@ -92,11 +92,6 @@ public class D2D extends Activity{
 	    setContentView(R.layout.d2d_activity_main);
 	    context = this;
 
-		//Notification
-		//notifier = new GCMNotifier(context);
-		//notifier.registerNotifier();
-
-
 
 		D2DPeers = DeviceData.getInstance();
 
@@ -289,8 +284,6 @@ public class D2D extends Activity{
 
 	     Intent intent= new Intent(this, D2DMeshService.class);
 		 bindService(intent, meshConnection, Context.BIND_AUTO_CREATE);
-
-		 //notifier.sendToAppServer();
 
 		 btD2DManager.registerBluetooth();
 		 wfD2DManager.registerWifiDirect();
