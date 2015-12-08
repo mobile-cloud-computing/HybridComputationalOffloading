@@ -10,7 +10,9 @@
 package ee.ut.cs.d2d.hybridoffloading;
 
 
-
+/**
+ * author Huber Flores
+ */
 
 public @interface Hybrid {
 }
