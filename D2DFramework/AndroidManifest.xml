@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="16"
-        android:targetSdkVersion="20" />
+        android:targetSdkVersion="23" />
 
      <!-- permissions to access mobile resources -->
     <uses-permission android:name="android.permission.BATTERY_STATS" />
@@ -21,7 +21,11 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:required = "true" android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    
+
+
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="ee.ut.cs.d2d.permission.C2D_MESSAGE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     
     <application
         android:allowBackup="true"
@@ -72,6 +76,20 @@
         
         <receiver android:name="ee.ut.cs.d2d.services.D2DScanService" android:enabled="true">
         </receiver>
+
+
+        <receiver
+            android:name="ee.ut.cs.d2d.notification.GCMBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+                <category android:name="com.javapapers.android" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name="ee.ut.cs.d2d.notification.GCMNotificationIntentService" />
 
 
         <!--

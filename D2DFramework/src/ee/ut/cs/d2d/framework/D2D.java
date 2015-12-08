@@ -17,6 +17,7 @@ import ee.ut.cs.d2d.communication.D2DWifiDirectManager;
 import ee.ut.cs.d2d.data.DeviceData;
 import ee.ut.cs.d2d.data.DeviceListAdapter;
 import ee.ut.cs.d2d.hybridoffloading.task.Queens;
+import ee.ut.cs.d2d.notification.GCMNotifier;
 import ee.ut.cs.d2d.services.D2DMeshService;
 import ee.ut.cs.d2d.utilities.Commons;
 
@@ -41,7 +42,6 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
-
 
 
 /**
@@ -81,12 +81,22 @@ public class D2D extends Activity{
 	private ImageButton log;
 
 
+	//Notification
+	GCMNotifier notifier;
+
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 	    setContentView(R.layout.d2d_activity_main);
 	    context = this;
+
+		//Notification
+		//notifier = new GCMNotifier(context);
+		//notifier.registerNotifier();
+
+
 
 		D2DPeers = DeviceData.getInstance();
 
@@ -202,19 +212,19 @@ public class D2D extends Activity{
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 									long id) {
 
-				String peer =	(String) parent.getItemAtPosition(position);
+				String peer = (String) parent.getItemAtPosition(position);
 				String[] separated = peer.split("/");
 
 				String peerAddress = separated[0];
 				//Log.d(TAG, peerAddress);
 
-				if (nDevice.equals(Commons.bluetooth)){ //connect to peer using Bluetooth
-					BluetoothDevice btPeer = (BluetoothDevice) D2DPeers.searchForPeer(peerAddress ,nDevice);
+				if (nDevice.equals(Commons.bluetooth)) { //connect to peer using Bluetooth
+					BluetoothDevice btPeer = (BluetoothDevice) D2DPeers.searchForPeer(peerAddress, nDevice);
 					//Log.d(TAG, "connect using: " + btPeer.getAddress() + "," + btPeer.getBondState());
-						btD2DManager.connect(btPeer);
+					btD2DManager.connect(btPeer);
 
-				}else{
-					if (nDevice.equals(Commons.wifiDirect)){ //connect to peer using wifidirect
+				} else {
+					if (nDevice.equals(Commons.wifiDirect)) { //connect to peer using wifidirect
 						WifiP2pDevice wfPeer = (WifiP2pDevice) D2DPeers.searchForPeer(peerAddress, nDevice);
 						//Log.d(TAG, "connect using: " + wfPeer.deviceName + "," + wfPeer.status);
 
@@ -224,6 +234,13 @@ public class D2D extends Activity{
 
 			}
 		});
+
+
+		//Notification
+		notifier = new GCMNotifier(context);
+		notifier.registerNotifier();
+
+
 	}
 
 	/**
@@ -273,9 +290,12 @@ public class D2D extends Activity{
 	     Intent intent= new Intent(this, D2DMeshService.class);
 		 bindService(intent, meshConnection, Context.BIND_AUTO_CREATE);
 
+		 //notifier.sendToAppServer();
 
 		 btD2DManager.registerBluetooth();
 		 wfD2DManager.registerWifiDirect();
+
+
 
 	 }
 	 
@@ -285,6 +305,8 @@ public class D2D extends Activity{
 
 		 btD2DManager.unregisterBluetooth();
 		 wfD2DManager.unregisterWifiDirect();
+
+		 notifier.unregisterMessage();
 	 }
 
 	 @Override
