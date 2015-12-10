@@ -14,21 +14,21 @@ import java.io.Serializable;
 
 public abstract class HybridRemotable implements Serializable  {
     private static final long serialVersionUID = 3;
-    transient protected HybridController cloudController = new HybridController();
+    transient protected HybridController hybridController = new HybridController();
 
     protected HybridRemotable() {
     }
 
     public HybridRemotable(HybridController cc) {
-        cloudController = cc;
+        hybridController = cc;
     }
 
     public HybridController getHybridController() {
-        return cloudController;
+        return hybridController;
     }
 
     public void setCloudController(HybridController cloudController) {
-        this.cloudController = cloudController;
+        this.hybridController = cloudController;
     }
 
 }
