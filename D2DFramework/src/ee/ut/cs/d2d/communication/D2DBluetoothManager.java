@@ -4,10 +4,12 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.IntentFilter;
+import android.util.Log;
 
 import ee.ut.cs.d2d.bluetooth.D2DBluetoothActions;
 import ee.ut.cs.d2d.data.DeviceData;
 import ee.ut.cs.d2d.data.DeviceListAdapter;
+import ee.ut.cs.d2d.hybridoffloading.bluetooth.D2DBluetoothServer;
 
 /**
  * Created by hflores on 02/12/15.
@@ -37,7 +39,12 @@ public class D2DBluetoothManager {
     public void initialize(){
         btReceiver = new D2DBluetoothActions(context, D2DPeers, mListAdapter);
         addBluetoothActions();
-    }
+
+        new Thread(
+                new ServerBluetooth()
+        ).start();
+
+     }
 
     public void addBluetoothActions(){
         btIntentFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
@@ -57,10 +64,33 @@ public class D2DBluetoothManager {
     }
 
     public void connect(BluetoothDevice btDevice){
-        new Thread(
+        /*new Thread(
                 new D2DBluetoothConnection(btAdapter, btDevice)
-        ).start();
+        ).start();*/
 
+        D2DBluetoothConnection conn = D2DBluetoothConnection.getInstance();
+        conn.setD2DBluetoothSurrogate(btAdapter, btDevice);
+
+    }
+
+
+    class ServerBluetooth implements Runnable{
+        long runningTime = 5 * 60000; //t minutes
+
+        @Override
+        public void run() {
+            D2DBluetoothServer btServer = new D2DBluetoothServer(btAdapter);
+            Log.d(TAG, "Starting Bluetooth server...)");
+            new Thread(btServer).start();
+
+            try {
+                Thread.sleep(runningTime);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Log.d(TAG, "Stopping Bluetooth server...");
+            btServer.stop();
+        }
     }
 
 }

@@ -17,6 +17,7 @@ import ee.ut.cs.d2d.communication.D2DWifiDirectManager;
 import ee.ut.cs.d2d.data.DeviceData;
 import ee.ut.cs.d2d.data.DeviceListAdapter;
 import ee.ut.cs.d2d.hybridoffloading.task.Queens;
+import ee.ut.cs.d2d.hybridoffloading.task.SelectionSort;
 import ee.ut.cs.d2d.notification.GCMNotifier;
 import ee.ut.cs.d2d.services.D2DMeshService;
 import ee.ut.cs.d2d.utilities.Commons;
@@ -53,7 +54,7 @@ public class D2D extends Activity{
 	private final String TAG = D2D.class.getSimpleName();
 
 	//Network device to be used, e.g., WifiDirect or Blueetooth
-	private String nDevice = Commons.wifiDirect;
+	private String nDevice = Commons.bluetooth;
 
 	//Contains the list of the peers in which the device can connect (D2D), both WifiDirect and Bluetooth
 	DeviceData D2DPeers;
@@ -232,8 +233,8 @@ public class D2D extends Activity{
 
 
 		//Notification
-		notifier = new GCMNotifier(context);
-		notifier.registerNotifier();
+		//notifier = new GCMNotifier(context);
+		//notifier.registerNotifier();
 
 
 	}
@@ -299,7 +300,7 @@ public class D2D extends Activity{
 		 btD2DManager.unregisterBluetooth();
 		 wfD2DManager.unregisterWifiDirect();
 
-		 notifier.unregisterMessage();
+		 //notifier.unregisterMessage();
 	 }
 
 	 @Override
@@ -380,10 +381,21 @@ public class D2D extends Activity{
 
 
 				//computational task to offload
-				new Thread(
-						new Queens(Queens.N)
-				).start();
 
+
+
+				if (nDevice.equals(Commons.wifiDirect)){
+					new Thread(
+							new Queens(Queens.N)
+					).start();
+				}else{
+					if (nDevice.equals(Commons.bluetooth)){
+						new Thread(
+								new SelectionSort()
+						).start();
+
+					}
+				}
 
 				break;
 

@@ -3,12 +3,17 @@ package ee.ut.cs.d2d.hybridoffloading.task;
 
 import android.util.Log;
 
-import ee.ut.cs.d2d.hybridoffloading.*;
+//import ee.ut.cs.d2d.hybridoffloading.HybridRemotable;
+
+
+
 import java.lang.reflect.Method;
 import java.util.Vector;
 
+import ee.ut.cs.d2d.hybridoffloading.bluetooth.BluetoothRemotable;
 
-public class Queens extends HybridRemotable implements Runnable {
+
+public class Queens extends BluetoothRemotable implements Runnable {
 
     static final String TAG = Queens.class.getSimpleName();
 
@@ -56,7 +61,7 @@ public class Queens extends HybridRemotable implements Runnable {
     	try{ 
 
         		toExecute = this.getClass().getDeclaredMethod("localenumerateQueens", paramTypes);
-        		Vector results = getCloudController().execute(toExecute,paramValues,this,this.getClass());
+        		Vector results = getBluetoothController().execute(toExecute,paramValues,this,this.getClass());
         		if(results != null){
         			copyState(results.get(1));
                     Log.d(TAG, "Executed using external resources");

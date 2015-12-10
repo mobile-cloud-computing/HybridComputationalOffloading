@@ -44,7 +44,7 @@ public class D2DMeshService extends Service {
 		//it works as expected
 		//proper policies should be put in place
 		//works together with startScanScheduler(); 
-		forcedStop();
+		//forcedStop(); //3
 		
 		return Service.START_NOT_STICKY;
 	}
@@ -62,7 +62,7 @@ public class D2DMeshService extends Service {
 		
 		//scheduler service is stopped here
 		//works together with startScanScheduler() and forcedStop();
-		stopScanScheduler();
+		//stopScanScheduler(); //2
 		
 		super.onDestroy();
 	}
@@ -95,7 +95,7 @@ public class D2DMeshService extends Service {
 			nDevice = new NetworkCenter().getNetworkProvider(context, nInterface);
 
 			//works together with stopScanScheduler() and forcedStop();
-			startScanScheduler();
+			//startScanScheduler(); //1
 		}
 
 	}
