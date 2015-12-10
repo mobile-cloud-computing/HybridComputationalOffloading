@@ -3,8 +3,6 @@ package ee.ut.cs.d2d.hybridoffloading.bluetooth;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,9 +19,9 @@ import ee.ut.cs.d2d.hybridoffloading.ResultPack;
 /**
  * Created by hflores on 09/12/15.
  */
-public class MakeConnection implements Runnable {
+public class D2DBluetoothConnection implements Runnable {
 
-    private final String TAG = MakeConnection.class.getSimpleName();
+    private final String TAG = D2DBluetoothConnection.class.getSimpleName();
 
     InputStream in = null;
     OutputStream out = null;
@@ -35,7 +33,7 @@ public class MakeConnection implements Runnable {
 
     BluetoothSocket mysocket = null;
 
-    public MakeConnection(BluetoothSocket mysocket){
+    public D2DBluetoothConnection(BluetoothSocket mysocket){
         this.mysocket = mysocket;
 
     }

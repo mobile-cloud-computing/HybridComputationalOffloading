@@ -80,21 +80,10 @@ public class D2DBluetoothServer implements Runnable {
                 Log.i(TAG, "Processing request");
 
                 new Thread(
-                        new MakeConnection(mysocket)
+                        new D2DBluetoothConnection(mysocket)
                 ).start();
 
 
-
-
-                /*try {
-                    Log.i(TAG, "Processing request");
-                    makeconnection();
-
-                    mmServerSocket.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                break;*/
             }
         }
 

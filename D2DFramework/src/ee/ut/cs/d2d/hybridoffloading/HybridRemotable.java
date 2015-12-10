@@ -23,7 +23,7 @@ public abstract class HybridRemotable implements Serializable  {
         cloudController = cc;
     }
 
-    public HybridController getCloudController() {
+    public HybridController getHybridController() {
         return cloudController;
     }
 

@@ -64,11 +64,8 @@ public class D2DBluetoothManager {
     }
 
     public void connect(BluetoothDevice btDevice){
-        /*new Thread(
-                new D2DBluetoothConnection(btAdapter, btDevice)
-        ).start();*/
-
-        D2DBluetoothConnection conn = D2DBluetoothConnection.getInstance();
+        //here there should be a list of possible devices for D2D offload.
+        D2DBluetoothResources conn = D2DBluetoothResources.getInstance();
         conn.setD2DBluetoothSurrogate(btAdapter, btDevice);
 
     }

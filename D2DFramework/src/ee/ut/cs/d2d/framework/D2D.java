@@ -54,7 +54,7 @@ public class D2D extends Activity{
 	private final String TAG = D2D.class.getSimpleName();
 
 	//Network device to be used, e.g., WifiDirect or Blueetooth
-	private String nDevice = Commons.bluetooth;
+	private String nDevice = Commons.wifiDirect;
 
 	//Contains the list of the peers in which the device can connect (D2D), both WifiDirect and Bluetooth
 	DeviceData D2DPeers;
@@ -381,9 +381,6 @@ public class D2D extends Activity{
 
 
 				//computational task to offload
-
-
-
 				if (nDevice.equals(Commons.wifiDirect)){
 					new Thread(
 							new Queens(Queens.N)
@@ -391,6 +388,7 @@ public class D2D extends Activity{
 				}else{
 					if (nDevice.equals(Commons.bluetooth)){
 						new Thread(
+								//Unlike Wifi, Bluetooth offloading needs to extend Serializable
 								new SelectionSort()
 						).start();
 

@@ -1,12 +1,11 @@
 package ee.ut.cs.d2d.hybridoffloading.bluetooth;
 
-import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
 import java.lang.reflect.Method;
 import java.util.Vector;
 
-import ee.ut.cs.d2d.communication.D2DBluetoothConnection;
+import ee.ut.cs.d2d.communication.D2DBluetoothResources;
 import ee.ut.cs.d2d.hybridoffloading.NetInfo;
 
 /**
@@ -16,7 +15,7 @@ public class BluetoothController {
     private final String TAG = BluetoothController.class.getSimpleName();
 
     private D2DBluetoothClient NM = null;
-    D2DBluetoothConnection conn = D2DBluetoothConnection.getInstance();
+    D2DBluetoothResources conn = D2DBluetoothResources.getInstance();
 
     Object result = null;
     Object state = null;
