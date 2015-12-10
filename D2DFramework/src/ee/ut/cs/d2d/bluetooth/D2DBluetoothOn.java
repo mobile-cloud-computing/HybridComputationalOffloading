@@ -59,9 +59,9 @@ public class D2DBluetoothOn implements BluetoothState {
 		/*Intent discoverableIntent = new
 				Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
 		discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 0);
-		btContext.startActivity(discoverableIntent);
+		btContext.startActivity(discoverableIntent);*/
 
-        d2DBluetooth.setD2DBluetoothState(d2DBluetooth.getD2DBluetoothIdle());*/
+        d2DBluetooth.setD2DBluetoothState(d2DBluetooth.getD2DBluetoothIdle());
 		
 	}
 

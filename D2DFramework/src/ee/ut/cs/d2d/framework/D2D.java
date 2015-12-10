@@ -361,7 +361,29 @@ public class D2D extends Activity{
 			case R.id.discoverButton:
 
 				//to test manual discovery
-				meshService.discovery();
+
+				if (nDevice.equals(Commons.wifiDirect)){
+					meshService.discovery();
+				}else{
+					if (nDevice.equals(Commons.bluetooth)){
+						BluetoothAdapter bAdapter = BluetoothAdapter.getDefaultAdapter();
+						if(bAdapter.getScanMode() == BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
+							// device is discoverable & accessible
+							meshService.discovery();
+						} else {
+							// device is not discoverable & accessible
+							//Turns on bluetooth and enables the device to be discover t seconds, t 0 always, t interval
+							Intent discoverableIntent = new
+							Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+							discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 0);
+							startActivity(discoverableIntent);
+
+							meshService.discovery();
+						}
+					}
+				}
+
+
 
 				break;
 
