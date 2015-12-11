@@ -96,7 +96,7 @@ public class D2DMeshService extends Service {
 			nDevice = new NetworkCenter().getNetworkProvider(context, nInterface);
 
 			//works together with stopScanScheduler() and forcedStop();
-			startScanScheduler(); //1
+			//startScanScheduler(); //1
 		}
 
 	}

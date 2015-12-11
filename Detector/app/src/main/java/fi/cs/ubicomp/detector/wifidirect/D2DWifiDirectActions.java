@@ -1,12 +1,21 @@
 package fi.cs.ubicomp.detector.wifidirect;
 
-import android.app.Activity;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.NetworkInfo;
+import android.net.wifi.p2p.WifiP2pDevice;
+import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import fi.cs.ubicomp.detector.database.DatabaseHandler;
+
 
 
 /**
@@ -17,27 +26,66 @@ public class D2DWifiDirectActions extends BroadcastReceiver {
     private final String TAG = D2DWifiDirectActions.class.getSimpleName();
 
 
-    private WifiP2pManager mManager;
-    private WifiP2pManager.Channel mChannel;
-    //private Activity mActivity;
+    private WifiP2pManager wfManager;
+    private WifiP2pManager.Channel wfChannel;
 
-    WifiP2pManager.PeerListListener mPeerListListener;
-    WifiP2pManager.ConnectionInfoListener mPeerConnectionListener;
 
-    public D2DWifiDirectActions(WifiP2pManager manager, WifiP2pManager.Channel channel, /*Activity activity,*/ WifiP2pManager.PeerListListener mPeerListListener,WifiP2pManager.ConnectionInfoListener mPeerConnectionListener) {
+    private List peers = new ArrayList();
+
+    public D2DWifiDirectActions() {
         super();
-        this.mManager = manager;
-        this.mChannel = channel;
-        //this.mActivity = activity;
-        this.mPeerListListener = mPeerListListener;
-        this.mPeerConnectionListener = mPeerConnectionListener;
-
-
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
+
+        final DatabaseHandler dataEvent = DatabaseHandler.getInstance();
+        dataEvent.setContext(context);
+
+        WifiP2pManager.PeerListListener wfPeerListListener = new WifiP2pManager.PeerListListener() {
+
+            @Override
+            public void onPeersAvailable(WifiP2pDeviceList peerList) {
+                System.out.println("Listening for devices...");
+                peers.clear();
+                peers.addAll(peerList.getDeviceList());
+
+                if (peers.size() == 0) {
+                    System.out.println("No devices found");
+                    dataEvent.getInstance().getDatabaseManager().saveData(System.currentTimeMillis(),
+                            "No devices found",
+                            "No devices found",
+                            1,
+                            0,
+                            0,
+                            0);
+
+                    return;
+                }else{
+                    Iterator<WifiP2pDevice> i = peers.iterator();
+                    while(i.hasNext()){
+                        WifiP2pDevice device = i.next();
+                        //Log.d(TAG,device.deviceName);
+                        dataEvent.getInstance().getDatabaseManager().saveData(System.currentTimeMillis(),
+                                device.deviceName,
+                                device.deviceAddress,
+                                1,
+                                0,
+                                0,
+                                0);
+
+                    }
+
+                }
+
+
+            }
+        };
+
+        wfManager = (WifiP2pManager) context.getSystemService(Context.WIFI_P2P_SERVICE);
+        wfChannel = wfManager.initialize(context, context.getMainLooper(), null);
+
 
         if (WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION.equals(action)) {
             // Check to see if Wi-Fi is enabled and notify appropriate activity
@@ -54,15 +102,15 @@ public class D2DWifiDirectActions extends BroadcastReceiver {
         } else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
             // Call WifiP2pManager.requestPeers() to get a list of current peers
             System.out.println("2");
-            if (mManager != null) {
-                mManager.requestPeers(mChannel, mPeerListListener);
+            if (wfManager != null) {
+                wfManager.requestPeers(wfChannel, wfPeerListListener);
             }
 
 
         } else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
             // Respond to new connection or disconnections
             System.out.println("3");
-            if (mManager == null){
+            if (wfManager == null){
                 return;
             }
 
@@ -72,22 +120,14 @@ public class D2DWifiDirectActions extends BroadcastReceiver {
                 System.out.println(networkInfo.getState());
             }
 
-            if (networkInfo.isConnected()){
-                Log.d(TAG, "This device is connected with other device");
-
-                mManager.requestConnectionInfo(mChannel, mPeerConnectionListener);
-            }else{
-
-                System.out.println("Something went wrong");
-            }
-
 
 
         } else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)) {
             // Respond to this device's wifi state changing
             System.out.println("4");
         }
+
     }
 
-}
 
+}

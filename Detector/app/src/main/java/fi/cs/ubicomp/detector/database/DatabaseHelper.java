@@ -22,7 +22,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-	private static final String DATABASE_NAME = "event-surrogate.db";
+	public static final String DATABASE_NAME = "event-surrogate.db";
 	
 	private static final int DATABASE_VERSION = 1;
 

@@ -35,7 +35,7 @@ public class SurrogateSensor extends AppCompatActivity {
     private final String TAG = SurrogateSensor.class.getSimpleName();
 
     //Network device to be used, e.g., WifiDirect or Blueetooth
-    private String nDevice = Commons.bluetooth;
+    private String nDevice = Commons.wifiDirect;
 
     //Contains the list of the peers in which the device can connect (D2D), both WifiDirect and Bluetooth
     DeviceData D2DPeers;
@@ -78,34 +78,8 @@ public class SurrogateSensor extends AppCompatActivity {
 
         D2DPeers = DeviceData.getInstance();
 
-        /*dataEvent.getInstance().getDatabaseManager().saveData(System.currentTimeMillis(),
-                "surrogate id",
-                "127.0.0.1",
-                0,
-                0,
-                1,
-                600);
 
-        dataEvent.getInstance().getDatabaseManager().saveData(System.currentTimeMillis(),
-                "surrogate id",
-                "10.0.0.1",
-                0,
-                0,
-                1,
-                700);
-
-
-        dataEvent.getInstance().getDatabaseManager().saveData(System.currentTimeMillis(),
-                "surrogate id",
-                "192.0.0.1",
-                0,
-                1,
-                0,
-                0);
-
-        */
-
-        extractDatabaseFile(new DatabaseCommons());
+        //extractDatabaseFile(new DatabaseCommons());
 
     }
 
