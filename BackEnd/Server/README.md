@@ -6,25 +6,22 @@ Project is mavenized for automatic compilation and deployment.
 
 
 ```xml
-$ git clone https://github.com/huberflores/ScalingMobileCodeOffloading.git
+$ git clone https://github.com/mobile-cloud-computing/HybridComputationalOffloading.git
 ````
 
 ```xml
-$ cd /Framework/Manager/CodeOffload/
+$ cd /BackEnd/Server/
 ````
 
 ```xml
 $ mvn clean install
 ````
 
-```xml
-$ mvn org.apache.maven.plugins:maven-assembly-plugin:2.2-beta-2:assembly
-````
 
 Upload the front-end to the instance
 
 ```xml
-$ scp -i /home/huber/.../HuberFlores/Ireland/pk-huber_flores.pem -r /home/huber/.../ScalingMobileCodeOffloading/Framework/Manager/CodeOffload/target/frontEnd-0.0.1-SNAPSHOT-jar-with-dependencies.jar ubuntu@ec2-xxx-xxx-xxx-xxx.eu-west-1.compute.amazonaws.com:/home/ubuntu/android-x86/
+$ scp -i /home/huber/.../HuberFlores/Ireland/pk-huber_flores.pem -r /home/huber/.../HybridComputationalOffloading/BackEnd/Server/target/frontEnd-0.0.1-SNAPSHOT-jar-with-dependencies.jar ubuntu@ec2-xxx-xxx-xxx-xxx.eu-west-1.compute.amazonaws.com:/home/ubuntu/android-x86/
 ````
 
 Connect to the instance
