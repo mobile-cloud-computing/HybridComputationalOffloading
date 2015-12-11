@@ -1,7 +1,13 @@
 package fi.cs.ubicomp.detector;
 
+import android.bluetooth.BluetoothAdapter;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -9,17 +15,44 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.IOException;
 
+import fi.cs.ubicomp.detector.data.DeviceData;
 import fi.cs.ubicomp.detector.database.DatabaseCommons;
 import fi.cs.ubicomp.detector.database.DatabaseHandler;
+import fi.cs.ubicomp.detector.services.D2DMeshService;
+import fi.cs.ubicomp.detector.utilities.Commons;
 
 public class SurrogateSensor extends AppCompatActivity {
 
     private DatabaseHandler dataEvent;
 
     private Context context;
+
+    private final String TAG = SurrogateSensor.class.getSimpleName();
+
+    //Network device to be used, e.g., WifiDirect or Blueetooth
+    private String nDevice = Commons.bluetooth;
+
+    //Contains the list of the peers in which the device can connect (D2D), both WifiDirect and Bluetooth
+    DeviceData D2DPeers;
+
+
+    //Blueetooth implementation
+    private BluetoothAdapter btAdapter;
+
+
+    //WifiDirect implementation
+    WifiP2pManager wfManager;
+    WifiP2pManager.Channel wfChannel;
+
+
+    //Bluetooth and WifiDirect services are provided by this service
+    private D2DMeshService meshService;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +76,9 @@ public class SurrogateSensor extends AppCompatActivity {
         dataEvent = DatabaseHandler.getInstance();
         dataEvent.setContext(context);
 
+        D2DPeers = DeviceData.getInstance();
 
-        dataEvent.getInstance().getDatabaseManager().saveData(System.currentTimeMillis(),
+        /*dataEvent.getInstance().getDatabaseManager().saveData(System.currentTimeMillis(),
                 "surrogate id",
                 "127.0.0.1",
                 0,
@@ -69,6 +103,7 @@ public class SurrogateSensor extends AppCompatActivity {
                 0,
                 0);
 
+        */
 
         extractDatabaseFile(new DatabaseCommons());
 
@@ -95,6 +130,55 @@ public class SurrogateSensor extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Intent intent= new Intent(this, D2DMeshService.class);
+        bindService(intent, meshConnection, Context.BIND_AUTO_CREATE);
+
+
+
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        unbindService(meshConnection);
+    }
+
+
+    private ServiceConnection meshConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder binder) {
+            D2DMeshService.MyBinder connector = (D2DMeshService.MyBinder) binder;
+
+            meshService = connector.getMeshServiceInstance();
+            meshService.setServiceContext(context, nDevice);
+
+
+            Toast.makeText(SurrogateSensor.this, "Connected", Toast.LENGTH_SHORT)
+                    .show();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName className) {
+            meshService = null;
+        }
+    };
+
+
 
     //Extract database
     public void extractDatabaseFile(DatabaseCommons db){

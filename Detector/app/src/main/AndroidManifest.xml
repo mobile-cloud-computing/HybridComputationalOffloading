@@ -7,6 +7,20 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <!-- permissions to access mobile resources -->
+    <uses-permission android:name="android.permission.BATTERY_STATS" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+
+    <uses-permission android:required = "true" android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:required = "true" android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+
+
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -28,6 +42,33 @@
             android:name="fi.cs.ubicomp.detector.manager.MyEventContentProvider"
             android:authorities="fi.cs.ubicomp.detector.manager" >
         </provider>
+
+        <service
+            android:name="fi.cs.ubicomp.detector.services.D2DMeshService"
+            android:enabled="true"
+            android:exported="false" />
+
+
+        <receiver android:name="fi.cs.ubicomp.detector.services.D2DScanScheduler" android:enabled="true">
+            <intent-filter>
+                <action android:name="ee.ut.cs.intent.action.SCAN" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="fi.cs.ubicomp.detector.services.D2DScanService" android:enabled="true">
+        </receiver>
+
+        <receiver android:name="fi.cs.ubicomp.detector.bluetooth.D2DBluetoothActions" android:enabled="true">
+            <intent-filter>
+                <action android:name="android.bluetooth.device.action.FOUND" />
+                <action android:name="android.bluetooth.device.action.BOND_STATE_CHANGED" />
+                <action android:name="android.bluetooth.device.action.UUID" />
+                <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
+                <action android:name="android.bluetooth.adapter.action.DISCOVERY_STARTED" />
+                <action android:name="android.bluetooth.adapter.action.DISCOVERY_FINISHED" />
+            </intent-filter>
+        </receiver>
+
 
     </application>
 
