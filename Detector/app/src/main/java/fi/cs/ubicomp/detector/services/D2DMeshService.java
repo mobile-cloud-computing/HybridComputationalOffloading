@@ -22,6 +22,8 @@ import android.util.Log;
 
 import fi.cs.ubicomp.detector.network.NetworkCenter;
 import fi.cs.ubicomp.detector.network.NetworkDevice;
+import fi.cs.ubicomp.detector.wifi.RTTMonitor;
+import fi.cs.ubicomp.detector.wifi.WifiRTTActions;
 
 
 public class D2DMeshService extends Service {
@@ -46,6 +48,9 @@ public class D2DMeshService extends Service {
 		//proper policies should be put in place
 		//works together with startScanScheduler(); 
 		//forcedStop(); //3
+
+		Intent intentScheduler = new Intent(WifiRTTActions.RTT_INTENT);
+		sendBroadcast(intentScheduler);
 		
 		return Service.START_NOT_STICKY;
 	}
@@ -96,7 +101,8 @@ public class D2DMeshService extends Service {
 			nDevice = new NetworkCenter().getNetworkProvider(context, nInterface);
 
 			//works together with stopScanScheduler() and forcedStop();
-			//startScanScheduler(); //1
+			startScanScheduler(); //1
+
 		}
 
 	}

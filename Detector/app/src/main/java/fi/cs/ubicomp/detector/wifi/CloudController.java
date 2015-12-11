@@ -1,9 +1,14 @@
 package fi.cs.ubicomp.detector.wifi;
 
+import android.util.Log;
+
 import java.lang.reflect.Method;
 import java.util.Vector;
 
 public class CloudController {
+
+    private final String TAG = CloudController.class.getSimpleName();
+
     private NetworkManagerClient NM = null;
     byte[] IPAddress = new byte[4];  // cloud address
     int port;                        // cloud port
@@ -42,8 +47,10 @@ public class CloudController {
                 results.removeAllElements();
                 results.add(this.result);
                 results.add(this.state);
+                Log.d(TAG, "RTT received");
                 return results;
             }else{
+                Log.d(TAG, "RTT not received");
                 return null;
             }
         }

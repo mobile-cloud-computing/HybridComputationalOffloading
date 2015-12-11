@@ -15,5 +15,28 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:text="Nothing to see here, just send it to the background!"
+        android:id="@+id/textView" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stop monitoring!"
+        android:id="@+id/stopMonitor"
+        android:onClick="onClick"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="93dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Extract"
+        android:id="@+id/extract"
+        android:onClick="onClick"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/stopMonitor"
+        android:layout_alignStart="@+id/stopMonitor"
+        android:layout_alignRight="@+id/stopMonitor"
+        android:layout_alignEnd="@+id/stopMonitor" />
 </RelativeLayout>

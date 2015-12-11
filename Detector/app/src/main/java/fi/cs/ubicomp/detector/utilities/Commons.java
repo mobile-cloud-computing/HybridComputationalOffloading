@@ -26,4 +26,21 @@ public class Commons {
 
 	public static final String NAME = "HybridOffloading";
 	public static final String UUID = "1ed592f8-9928-44ef-9650-4bed9afc5596"; //auto-generated via https://www.uuidgenerator.net/
+
+
+	/*
+	* RTT
+ 	* */
+	public static final String SERVER_ADDRESS= "ec2-";
+	public static final String SERVER_NAME = "Amazon-EC2";
+	public static final String SERVER_ADDRESS_ERROR="127.0.0.1";
+	public static final String SERVER_NAME_ERROR = "unreachable";
+
+
+	/*
+	* CODE
+	* */
+	public static final String SECURITY_CODE_STOP = "333";
+	public static final String SECURITY_CODE_EXTRACT = "313";
+
 }

@@ -26,10 +26,10 @@ public class D2DScanScheduler extends BroadcastReceiver {
 	
 	public static final String D2DSCANSCHEDULER_ACTION_SCAN = "ee.ut.cs.intent.action.SCAN";
 
-	// Restart service every 30 seconds
+	// Restart service every t seconds
 	// Scheduling policy
 	// There should be multiple policies to scan for surrogates
-	private static final long REPEAT_TIME = 1000 * 120;
+	private static final long REPEAT_TIME = 1000 * 120; //(1000 = 1 sec) * 120 (60*2) (60 seconds = 1 minute)
 
 	
 	@Override
@@ -46,7 +46,7 @@ public class D2DScanScheduler extends BroadcastReceiver {
 		// Start 30 seconds after boot completed
 		cal.add(Calendar.SECOND, 30);
 		//
-		// Fetch every 30 seconds
+		// Fetch every t seconds
 		// InexactRepeating allows Android to optimize the energy consumption
 		service.setInexactRepeating(AlarmManager.RTC_WAKEUP,
 				cal.getTimeInMillis(), REPEAT_TIME, pending);

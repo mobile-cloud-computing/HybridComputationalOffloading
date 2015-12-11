@@ -78,6 +78,12 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name="fi.cs.ubicomp.detector.wifi.WifiRTTActions">
+            <intent-filter>
+				 <action android:name="fi.cs.ubicomp.intent.action.RTT" />
+            </intent-filter>
+        </receiver>
+
 
     </application>
 

@@ -2,13 +2,20 @@ package fi.cs.ubicomp.detector.wifi;
 
 
 
+import android.util.Log;
+
 import java.io.*;
 import java.net.Inet4Address;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
+import fi.cs.ubicomp.detector.database.DatabaseHandler;
+
 
 public class NetworkManagerClient {
+
+    private final String TAG = NetworkManagerClient.class.getSimpleName();
+
     int portnum;
     Socket mysocket = null;
     InputStream in = null;
@@ -18,6 +25,7 @@ public class NetworkManagerClient {
     byte []serverAddress =new byte[4];
     CloudController callingparent = null;
     long startTime = 0;
+
 
     public NetworkManagerClient(byte[] serverAddress, int port) {
 
@@ -39,12 +47,17 @@ public class NetworkManagerClient {
             in = mysocket.getInputStream();
             out = mysocket.getOutputStream();
 
-            oos = new ObjectOutputStream(out);
+            //oos = new ObjectOutputStream(out);
+            oos = new ObjectOutputStream(new BufferedOutputStream(out));
+            oos.flush();
+            //ois = new ObjectInputStream(in);
+            ois =new ObjectInputStream(new BufferedInputStream(in));
 
-            ois = new ObjectInputStream(in);
             return true;
         } catch (IOException ex) {
+            ex.printStackTrace();
             callingparent.setResult(null, null);
+
             return false;
         }
     }
@@ -78,11 +91,15 @@ public class NetworkManagerClient {
         
         public void run() {
             try {
+                long startTime = System.currentTimeMillis();
 
-                oos.writeObject( MyPack );
+                oos.writeObject(MyPack);
                 oos.flush();
 
                 result = (ResultPack) ois.readObject();
+
+                long rtt = System.currentTimeMillis() - startTime;
+                Log.d(TAG, "RTT: " + rtt);
 
                 if((System.currentTimeMillis() - startTime) < NetInfo.waitTime){
                     if(result == null)
@@ -107,8 +124,10 @@ public class NetworkManagerClient {
                 mysocket = null;
 
             } catch (IOException ex) {
+                ex.printStackTrace();
                 callingparent.setResult(null, null);
             } catch (ClassNotFoundException ex) {
+                ex.printStackTrace();
                 callingparent.setResult(null, null);
             }
         }

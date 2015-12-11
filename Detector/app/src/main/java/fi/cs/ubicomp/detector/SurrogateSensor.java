@@ -1,8 +1,12 @@
 package fi.cs.ubicomp.detector;
 
+import android.app.AlarmManager;
+import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.net.wifi.p2p.WifiP2pManager;
@@ -12,9 +16,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -23,7 +30,9 @@ import fi.cs.ubicomp.detector.data.DeviceData;
 import fi.cs.ubicomp.detector.database.DatabaseCommons;
 import fi.cs.ubicomp.detector.database.DatabaseHandler;
 import fi.cs.ubicomp.detector.services.D2DMeshService;
+import fi.cs.ubicomp.detector.services.D2DScanService;
 import fi.cs.ubicomp.detector.utilities.Commons;
+import fi.cs.ubicomp.detector.wifi.RTTMonitor;
 
 public class SurrogateSensor extends AppCompatActivity {
 
@@ -34,23 +43,13 @@ public class SurrogateSensor extends AppCompatActivity {
     private final String TAG = SurrogateSensor.class.getSimpleName();
 
     //Network device to be used, e.g., WifiDirect or Blueetooth
-    private String nDevice = Commons.wifiDirect;
-
-    //Contains the list of the peers in which the device can connect (D2D), both WifiDirect and Bluetooth
-    DeviceData D2DPeers;
-
-
-    //Blueetooth implementation
-    private BluetoothAdapter btAdapter;
-
-
-    //WifiDirect implementation
-    WifiP2pManager wfManager;
-    WifiP2pManager.Channel wfChannel;
+    private String nDevice = Commons.bluetooth;
 
 
     //Bluetooth and WifiDirect services are provided by this service
     private D2DMeshService meshService;
+
+    private String codeResult;
 
 
     @Override
@@ -60,14 +59,14 @@ public class SurrogateSensor extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+        });*/
 
         context = this;
 
@@ -75,10 +74,6 @@ public class SurrogateSensor extends AppCompatActivity {
         dataEvent = DatabaseHandler.getInstance();
         dataEvent.setContext(context);
 
-        D2DPeers = DeviceData.getInstance();
-
-
-        //extractDatabaseFile(new DatabaseCommons());
 
     }
 
@@ -161,5 +156,97 @@ public class SurrogateSensor extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+    public void stopScanScheduler(){
+        Intent intent = new Intent(this, D2DScanService.class);
+        PendingIntent pending = PendingIntent.getBroadcast(this, 0, intent,
+                PendingIntent.FLAG_CANCEL_CURRENT);
+
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        alarmManager.cancel(pending);
+
+        Log.d(TAG, "alarm service stopped");
+    }
+
+
+    public void forcedStop(){
+        Intent intentStop = new Intent(this, D2DMeshService.class);
+        stopService(intentStop);
+    }
+
+
+
+    public void onClick(View view) {
+
+        switch (view.getId()) {
+            case R.id.stopMonitor:
+                codeResult = null;
+                getCode();
+
+                break;
+
+
+            case R.id.extract:
+                codeResult = null;
+                getCode();
+
+
+                break;
+
+        }
+
+
+    }
+
+    public void getCode(){
+
+        // inflate alert dialog xml
+        LayoutInflater li = LayoutInflater.from(context);
+        View dialogView = li.inflate(R.layout.prompts, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                context);
+        // set title
+        alertDialogBuilder.setTitle("Introduce code:");
+        // set custom dialog icon
+        //alertDialogBuilder.setIcon(R.drawable.ic_launcher);
+        // set custom_dialog.xml to alertdialog builder
+        alertDialogBuilder.setView(dialogView);
+        final EditText userInput = (EditText) dialogView
+                .findViewById(R.id.et_input);
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+                                // get user input and set it to etOutput
+                                // edit text
+                                codeResult = userInput.getText().toString();
+                                if (codeResult.trim().equals(Commons.SECURITY_CODE_STOP)){
+                                    stopScanScheduler();
+                                    forcedStop();
+                                }else{
+                                    if (codeResult.trim().equals(Commons.SECURITY_CODE_EXTRACT)){
+                                        extractDatabaseFile(new DatabaseCommons());
+                                    }
+                                }
+
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+                                dialog.cancel();
+                            }
+                        });
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show it
+        alertDialog.show();
+
+    }
+
 
 }
