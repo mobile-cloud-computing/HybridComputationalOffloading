@@ -43,7 +43,7 @@ public class SurrogateSensor extends AppCompatActivity {
     private final String TAG = SurrogateSensor.class.getSimpleName();
 
     //Network device to be used, e.g., WifiDirect or Blueetooth
-    private String nDevice = Commons.bluetooth;
+    private String nDevice = Commons.wifiDirect;
 
 
     //Bluetooth and WifiDirect services are provided by this service

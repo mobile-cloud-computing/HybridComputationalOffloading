@@ -30,6 +30,7 @@ public class D2DBluetoothActions extends BroadcastReceiver{
 	
 	private final String TAG = D2DBluetoothActions.class.getSimpleName();
 
+	private BluetoothAdapter btAdapter;
 
 	public D2DBluetoothActions(){
 
@@ -43,6 +44,9 @@ public class D2DBluetoothActions extends BroadcastReceiver{
 
 		DatabaseHandler dataEvent = DatabaseHandler.getInstance();
 		dataEvent.setContext(context);
+
+		btAdapter = BluetoothAdapter.getDefaultAdapter();
+		String myDeviceMac = btAdapter.getAddress();
 
 
         if (BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)) {
@@ -71,10 +75,12 @@ public class D2DBluetoothActions extends BroadcastReceiver{
         	       Log.d(TAG, "\n  Device: " + device.getName() + ", " + device);
 
 				dataEvent.getInstance().getDatabaseManager().saveData(System.currentTimeMillis(),
+						myDeviceMac,
 						device.getName(),
 						device.getAddress(),
 						0,
 						1,
+						0,
 						0,
 						0);
 

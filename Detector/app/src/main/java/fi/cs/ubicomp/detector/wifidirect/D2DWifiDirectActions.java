@@ -5,6 +5,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pManager;
@@ -29,6 +31,8 @@ public class D2DWifiDirectActions extends BroadcastReceiver {
     private WifiP2pManager wfManager;
     private WifiP2pManager.Channel wfChannel;
 
+    private String myDeviceAddress;
+
 
     private List peers = new ArrayList();
 
@@ -39,6 +43,8 @@ public class D2DWifiDirectActions extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
+
+        myDeviceAddress = "";
 
         final DatabaseHandler dataEvent = DatabaseHandler.getInstance();
         dataEvent.setContext(context);
@@ -51,12 +57,15 @@ public class D2DWifiDirectActions extends BroadcastReceiver {
                 peers.clear();
                 peers.addAll(peerList.getDeviceList());
 
+
                 if (peers.size() == 0) {
                     System.out.println("No devices found");
                     dataEvent.getInstance().getDatabaseManager().saveData(System.currentTimeMillis(),
+                            myDeviceAddress,
                             "No devices found",
                             "No devices found",
                             1,
+                            0,
                             0,
                             0,
                             0);
@@ -68,9 +77,11 @@ public class D2DWifiDirectActions extends BroadcastReceiver {
                         WifiP2pDevice device = i.next();
                         //Log.d(TAG,device.deviceName);
                         dataEvent.getInstance().getDatabaseManager().saveData(System.currentTimeMillis(),
+                                myDeviceAddress,
                                 device.deviceName,
                                 device.deviceAddress,
                                 1,
+                                0,
                                 0,
                                 0,
                                 0);
@@ -87,6 +98,7 @@ public class D2DWifiDirectActions extends BroadcastReceiver {
         wfChannel = wfManager.initialize(context, context.getMainLooper(), null);
 
 
+
         if (WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION.equals(action)) {
             // Check to see if Wi-Fi is enabled and notify appropriate activity
             System.out.println("1");
@@ -94,6 +106,8 @@ public class D2DWifiDirectActions extends BroadcastReceiver {
             if (state == WifiP2pManager.WIFI_P2P_STATE_ENABLED) {
                 // Wifi P2P is enabled
                 Log.d(TAG, "Wifi direct is enabled");
+
+
             } else {
                 // Wi-Fi P2P is not enabled
                 Log.d(TAG, "Wifi direct is not enabled");
@@ -103,7 +117,10 @@ public class D2DWifiDirectActions extends BroadcastReceiver {
             // Call WifiP2pManager.requestPeers() to get a list of current peers
             System.out.println("2");
             if (wfManager != null) {
+
                 wfManager.requestPeers(wfChannel, wfPeerListListener);
+
+
             }
 
 

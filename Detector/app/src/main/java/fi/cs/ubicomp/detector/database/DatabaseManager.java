@@ -32,15 +32,17 @@ public class DatabaseManager {
 		this.dContext = c;
 	}
 	
-	public void saveData(double timestamp, String id, String address, double wfValue, double btValue, double wfCloudValue, double wfRTTValue ){
+	public void saveData(double timestamp, String myaddress, String id, String address, double wfValue, double btValue, double wfCloudValue, double wfRTTValue, double batteryLevel ){
 		ContentValues values = new ContentValues();
 		values.put(EventDescriptor.COLUMN_TIMESTAMP, timestamp);
+		values.put(EventDescriptor.COLUMN_OWN_DEVICE_ADDRESS, myaddress);
 		values.put(EventDescriptor.COLUMN_SURROGATE_ID, id);
 		values.put(EventDescriptor.COLUMN_SURROGATE_ADDRESS, address);
 		values.put(EventDescriptor.COLUMN_WIFIDIRECT, wfValue);
 		values.put(EventDescriptor.COLUMN_BLUETOOTH, btValue);
 		values.put(EventDescriptor.COLUMN_WIFICLOUD, wfCloudValue);
 		values.put(EventDescriptor.COLUMN_CLOUD_RTT, wfRTTValue);
+		values.put(EventDescriptor.COLUMN_BATTERY_LEVEL, batteryLevel);
 		 	
 		dbUri = dContext.getContentResolver().insert(MyEventContentProvider.CONTENT_URI, values);
 		

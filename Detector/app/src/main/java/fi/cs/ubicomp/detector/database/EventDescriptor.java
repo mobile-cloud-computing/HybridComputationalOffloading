@@ -26,12 +26,14 @@ public class EventDescriptor {
 	//Attributes
 	public static final String COLUMN_EVENT_ID = "_id";
 	public static final String COLUMN_TIMESTAMP = "timestamp";
+	public static final String COLUMN_OWN_DEVICE_ADDRESS = "myaddress";
 	public static final String COLUMN_SURROGATE_ID = "surrogateid";
 	public static final String COLUMN_SURROGATE_ADDRESS = "address";
 	public static final String COLUMN_WIFIDIRECT = "wifidirect";
 	public static final String COLUMN_BLUETOOTH = "bluetooth";
 	public static final String COLUMN_WIFICLOUD = "wificloud";
 	public static final String COLUMN_CLOUD_RTT = "wifirtt";
+	public static final String COLUMN_BATTERY_LEVEL = "batterylevel";
 	
 	//Database creation SQL statement
 	private static final String DATABASE_CREATE = "create table "
@@ -39,12 +41,14 @@ public class EventDescriptor {
 			+ "("
 			+ COLUMN_EVENT_ID + " integer primary key autoincrement, "
 			+ COLUMN_TIMESTAMP + " real not null, "
+			+ COLUMN_OWN_DEVICE_ADDRESS + " text not null, "
 			+ COLUMN_SURROGATE_ID + " text not null, "
 			+ COLUMN_SURROGATE_ADDRESS + " text not null, "
 			+ COLUMN_WIFIDIRECT + " real not null, "
 			+ COLUMN_BLUETOOTH + " real not null, "
 			+ COLUMN_WIFICLOUD + " real not null, "
-			+ COLUMN_CLOUD_RTT + " real not null "
+			+ COLUMN_CLOUD_RTT + " real not null, "
+			+ COLUMN_BATTERY_LEVEL + " real not null "
 			+");";
 	
 	 //Database creation

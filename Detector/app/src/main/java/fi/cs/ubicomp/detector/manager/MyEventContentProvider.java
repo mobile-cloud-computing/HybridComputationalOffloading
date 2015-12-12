@@ -195,7 +195,7 @@ public class MyEventContentProvider extends ContentProvider {
 	  }
 	
 	 private void checkColumns(String[] projection) {
-		    String[] available = {EventDescriptor.COLUMN_TIMESTAMP, EventDescriptor.COLUMN_SURROGATE_ID, EventDescriptor.COLUMN_SURROGATE_ADDRESS, EventDescriptor.COLUMN_WIFIDIRECT, EventDescriptor.COLUMN_BLUETOOTH, EventDescriptor.COLUMN_WIFICLOUD, EventDescriptor.COLUMN_CLOUD_RTT,EventDescriptor.COLUMN_EVENT_ID};
+		    String[] available = {EventDescriptor.COLUMN_TIMESTAMP, EventDescriptor.COLUMN_OWN_DEVICE_ADDRESS, EventDescriptor.COLUMN_SURROGATE_ID, EventDescriptor.COLUMN_SURROGATE_ADDRESS, EventDescriptor.COLUMN_WIFIDIRECT, EventDescriptor.COLUMN_BLUETOOTH, EventDescriptor.COLUMN_WIFICLOUD, EventDescriptor.COLUMN_CLOUD_RTT, EventDescriptor.COLUMN_BATTERY_LEVEL, EventDescriptor.COLUMN_EVENT_ID};
 		    if (projection != null) {
 		      HashSet<String> requestedColumns = new HashSet<String>(Arrays.asList(projection));
 		      HashSet<String> availableColumns = new HashSet<String>(Arrays.asList(available));
