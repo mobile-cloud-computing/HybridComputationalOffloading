@@ -31,7 +31,7 @@ public class Commons {
 	/*
 	* RTT
  	* */
-	public static final String SERVER_ADDRESS= "ec2-";
+	public static final String SERVER_ADDRESS= "52.29.39.208";
 	public static final String SERVER_NAME = "Amazon-EC2";
 	public static final String SERVER_ADDRESS_ERROR="127.0.0.1";
 	public static final String SERVER_NAME_ERROR = "unreachable";
@@ -48,7 +48,7 @@ public class Commons {
 	* Upload file service
 	* */
 
-	public static final String WEB_SERVICE_POST = "http://192.168.43.85:8080/Uploader/UploadServlet";
+	public static final String WEB_SERVICE_POST = "http://ec2-52-29-39-208.eu-central-1.compute.amazonaws.com:8080/Uploader/UploadServlet";
 
 
 	/*

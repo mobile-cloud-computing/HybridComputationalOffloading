@@ -75,6 +75,19 @@ public class SurrogateSensor extends AppCompatActivity {
         dataEvent = DatabaseHandler.getInstance();
         dataEvent.setContext(context);
 
+        BluetoothAdapter bAdapter = BluetoothAdapter.getDefaultAdapter();
+        if(bAdapter.getScanMode() == BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
+            // device is discoverable & accessible
+        } else {
+            // device is not discoverable & accessible
+            //Turns on bluetooth and enables the device to be discover t seconds, t 0 always, t interval
+            Intent discoverableIntent = new
+            Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 0);
+            startActivity(discoverableIntent);
+
+        }
+
     }
 
     @Override
