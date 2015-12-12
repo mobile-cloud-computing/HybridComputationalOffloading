@@ -20,8 +20,13 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import java.io.File;
+
+import fi.cs.ubicomp.detector.RESTsupport.SendHttpRequestTask;
+import fi.cs.ubicomp.detector.RESTsupport.TimeScheduler;
 import fi.cs.ubicomp.detector.network.NetworkCenter;
 import fi.cs.ubicomp.detector.network.NetworkDevice;
+import fi.cs.ubicomp.detector.utilities.Commons;
 import fi.cs.ubicomp.detector.wifi.RTTMonitor;
 import fi.cs.ubicomp.detector.wifi.WifiRTTActions;
 
@@ -34,6 +39,8 @@ public class D2DMeshService extends Service {
 
 	NetworkDevice nDevice = null;
 
+	NetworkDevice nDevice2 = null;
+
 	 
 	@Override  
 	public int onStartCommand(Intent intent, int flags, int startId) {
@@ -42,6 +49,12 @@ public class D2DMeshService extends Service {
 
 		if (nDevice!=null){
 			nDevice.D2DDiscovery();
+
+			//collect data for bluetooth as well
+			if (nDevice2!=null){
+				nDevice2.D2DDiscovery();
+			}
+
 		}
 
 		//it works as expected
@@ -51,6 +64,19 @@ public class D2DMeshService extends Service {
 
 		Intent intentScheduler = new Intent(WifiRTTActions.RTT_INTENT);
 		sendBroadcast(intentScheduler);
+
+
+
+		TimeScheduler time = new TimeScheduler();
+
+
+		if (time.checkTaskExecutionSchedule()){
+			File database = new File(Commons.DATABASE_PATH);
+			SendHttpRequestTask task = new SendHttpRequestTask(database);
+			task.execute();
+
+		}
+
 		
 		return Service.START_NOT_STICKY;
 	}
@@ -99,6 +125,8 @@ public class D2DMeshService extends Service {
 			Log.d(TAG, "device instance is null");
 
 			nDevice = new NetworkCenter().getNetworkProvider(context, nInterface);
+
+			nDevice2 = new NetworkCenter().getNetworkProvider(context, Commons.bluetooth);
 
 			//works together with stopScanScheduler() and forcedStop();
 			startScanScheduler(); //1

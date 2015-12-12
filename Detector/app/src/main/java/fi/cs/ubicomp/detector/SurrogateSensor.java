@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
+import fi.cs.ubicomp.detector.RESTsupport.TimeScheduler;
 import fi.cs.ubicomp.detector.data.DeviceData;
 import fi.cs.ubicomp.detector.database.DatabaseCommons;
 import fi.cs.ubicomp.detector.database.DatabaseHandler;
@@ -73,7 +74,6 @@ public class SurrogateSensor extends AppCompatActivity {
 
         dataEvent = DatabaseHandler.getInstance();
         dataEvent.setContext(context);
-
 
     }
 

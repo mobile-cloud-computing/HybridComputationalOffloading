@@ -43,4 +43,16 @@ public class Commons {
 	public static final String SECURITY_CODE_STOP = "333";
 	public static final String SECURITY_CODE_EXTRACT = "313";
 
+
+	/*
+	* Upload file service
+	* */
+
+	public static final String WEB_SERVICE_POST = "http://192.168.43.85:8080/Uploader/UploadServlet";
+
+
+	/*
+	* Database location
+	* */
+	public static final String DATABASE_PATH = "/data/data/fi.cs.ubicomp.detector/databases/event-surrogate.db";   //better to used - context.getDatabasePath(DataBaseHelper.dbName).toString;
 }
