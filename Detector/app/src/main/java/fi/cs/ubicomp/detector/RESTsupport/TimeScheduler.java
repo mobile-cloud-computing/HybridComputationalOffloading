@@ -20,8 +20,8 @@ public class TimeScheduler {
     private Date dateCompareOne;
     private Date dateCompareTwo;
 
-    private String compareStringOne = "12:00";
-    private String compareStringTwo = "2:00";
+    private String compareStringOne = "10:00";
+    private String compareStringTwo = "11:00";
 
     SimpleDateFormat inputParser = new SimpleDateFormat(inputFormat, Locale.US);
 
@@ -50,7 +50,7 @@ public class TimeScheduler {
         dateCompareTwo = parseDate(compareStringTwo);
 
 
-        if (am_pm.equals("AM")){
+        if (am_pm.equals("PM")){
             if ( dateCompareOne.before( date ) && dateCompareTwo.after(date)) {
                 return true;
             }
