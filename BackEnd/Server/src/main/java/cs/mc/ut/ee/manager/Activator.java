@@ -16,6 +16,8 @@ import fi.cs.ubicomp.detector.wifi.NetInfo;
  */
 
 public class Activator {
+	 
+	private static final long activeTime = 1000 * 3600 * 24 *15;  // 15 days
 	
 	public static void main(String[] args) {
         
@@ -25,7 +27,7 @@ public class Activator {
 		
 
 		try {
-		    Thread.sleep(100 * 10000);
+		    Thread.sleep(activeTime);
 		} catch (InterruptedException e) {
 		    e.printStackTrace();
 		}

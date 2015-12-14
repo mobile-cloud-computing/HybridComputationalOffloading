@@ -30,7 +30,8 @@ public class D2DScanScheduler extends BroadcastReceiver {
 	// Scheduling policy
 	// There should be multiple policies to scan for surrogates
 	//private static final long REPEAT_TIME = 1000 * 120; //(1000 = 1 sec) * 120 (60*2) (60 seconds = 1 minute)
-	private static final long REPEAT_TIME = 1000 * 3600;
+	private static final long REPEAT_TIME = 1000 * 900;
+	//private static final long REPEAT_TIME = 1000 * 3600;
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {
