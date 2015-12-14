@@ -147,9 +147,9 @@ public class D2DMeshService extends Service {
 		if (nDevice==null){
 			Log.d(TAG, "device instance is null");
 
-			nDevice = new NetworkCenter().getNetworkProvider(context, nInterface);
+			//nDevice = new NetworkCenter().getNetworkProvider(context, nInterface);
 
-			nDevice2 = new NetworkCenter().getNetworkProvider(context, Commons.bluetooth);
+			//nDevice2 = new NetworkCenter().getNetworkProvider(context, Commons.bluetooth);
 
 			//works together with stopScanScheduler() and forcedStop();
 			startScanScheduler(); //1
