@@ -41,11 +41,32 @@ public class D2DMeshService extends Service {
 
 	NetworkDevice nDevice2 = null;
 
-	 
+
 	@Override  
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.d(TAG, "onStartCommand");
-		  
+
+
+
+
+		if (nDevice==null){
+
+			Log.d(TAG, "trying to re-load...");
+
+			if (getApplicationContext()!=null){
+
+				Log.d(TAG, "Context was not null...");
+
+				nDevice = new NetworkCenter().getNetworkProvider(getApplicationContext(), Commons.wifiDirect);
+
+				nDevice2 = new NetworkCenter().getNetworkProvider(getApplicationContext(), Commons.bluetooth);
+			}else{
+				Log.d(TAG, "Context was null...");
+			}
+
+
+		}
+
 
 		if (nDevice!=null){
 			nDevice.D2DDiscovery();
@@ -55,6 +76,8 @@ public class D2DMeshService extends Service {
 				nDevice2.D2DDiscovery();
 			}
 
+		}else{
+			Log.d(TAG, "Interface cannot be loaded!");
 		}
 
 		//it works as expected
