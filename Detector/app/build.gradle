@@ -9,12 +9,24 @@ android {
         applicationId "fi.cs.ubicomp.detector"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 4
+        versionName "4"
 
     }
+
+    signingConfigs {
+
+        release {
+            storeFile file("android.key")
+            storePassword "android"
+            keyAlias "androidkey"
+            keyPassword "0123456789"
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
