@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.design.widget.FloatingActionButton;
@@ -23,17 +22,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import java.io.IOException;
 
-import fi.cs.ubicomp.detector.RESTsupport.TimeScheduler;
-import fi.cs.ubicomp.detector.data.DeviceData;
+
 import fi.cs.ubicomp.detector.database.DatabaseCommons;
 import fi.cs.ubicomp.detector.database.DatabaseHandler;
 import fi.cs.ubicomp.detector.services.D2DMeshService;
 import fi.cs.ubicomp.detector.services.D2DScanService;
 import fi.cs.ubicomp.detector.utilities.Commons;
-import fi.cs.ubicomp.detector.wifi.RTTMonitor;
+
 
 public class SurrogateSensor extends AppCompatActivity {
 
@@ -74,20 +71,7 @@ public class SurrogateSensor extends AppCompatActivity {
 
         dataEvent = DatabaseHandler.getInstance();
         dataEvent.setContext(context);
-
-        BluetoothAdapter bAdapter = BluetoothAdapter.getDefaultAdapter();
-        if(bAdapter.getScanMode() == BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
-            // device is discoverable & accessible
-        } else {
-            // device is not discoverable & accessible
-            //Turns on bluetooth and enables the device to be discover t seconds, t 0 always, t interval
-            Intent discoverableIntent = new
-            Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 0);
-            startActivity(discoverableIntent);
-
-        }
-
+        
     }
 
     @Override
@@ -105,7 +89,15 @@ public class SurrogateSensor extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_about) {
+            AlertDialog.Builder dlgAbout = new AlertDialog.Builder(this);
+            dlgAbout.setTitle("Detector");
+            dlgAbout.setMessage("Implemented using HyMobi Framework");
+            dlgAbout.setPositiveButton("Ok", null);
+            dlgAbout.setCancelable(true);
+            dlgAbout.create().show();
+
+
             return true;
         }
 
@@ -116,11 +108,10 @@ public class SurrogateSensor extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
+        checkBluetoothDiscoverability();
+
         Intent intent= new Intent(this, D2DMeshService.class);
         bindService(intent, meshConnection, Context.BIND_AUTO_CREATE);
-
-
-
 
     }
 
@@ -136,6 +127,22 @@ public class SurrogateSensor extends AppCompatActivity {
         super.onPause();
 
         unbindService(meshConnection);
+    }
+
+
+    public void checkBluetoothDiscoverability(){
+        BluetoothAdapter bAdapter = BluetoothAdapter.getDefaultAdapter();
+        if(bAdapter.getScanMode() == BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
+            // device is discoverable & accessible
+        } else {
+            // device is not discoverable & accessible
+            //Turns on bluetooth and enables the device to be discover t seconds, t 0 always, t interval
+            Intent discoverableIntent = new
+                    Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 0);
+            startActivity(discoverableIntent);
+
+        }
     }
 
 

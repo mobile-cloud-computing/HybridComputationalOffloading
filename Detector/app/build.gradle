@@ -9,8 +9,8 @@ android {
         applicationId "fi.cs.ubicomp.detector"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 4
-        versionName "4"
+        versionCode 6
+        versionName "6"
 
     }
 

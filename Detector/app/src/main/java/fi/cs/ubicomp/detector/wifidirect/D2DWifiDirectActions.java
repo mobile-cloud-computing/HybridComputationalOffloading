@@ -59,11 +59,12 @@ public class D2DWifiDirectActions extends BroadcastReceiver {
 
 
                 if (peers.size() == 0) {
-                    System.out.println("No devices found");
+                    //This is particularly important as it means that devices around are not addressable via WifiDirect
+                    System.out.println("No-devices-found");
                     dataEvent.getInstance().getDatabaseManager().saveData(System.currentTimeMillis(),
                             myDeviceAddress,
-                            "No devices found",
-                            "No devices found",
+                            "No-devices-found",
+                            "No-devices-found",
                             1,
                             0,
                             0,
@@ -101,7 +102,7 @@ public class D2DWifiDirectActions extends BroadcastReceiver {
 
         if (WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION.equals(action)) {
             // Check to see if Wi-Fi is enabled and notify appropriate activity
-            System.out.println("1");
+            //Log.d(TAG, "1");
             int state = intent.getIntExtra(WifiP2pManager.EXTRA_WIFI_STATE, -1);
             if (state == WifiP2pManager.WIFI_P2P_STATE_ENABLED) {
                 // Wifi P2P is enabled
@@ -115,7 +116,7 @@ public class D2DWifiDirectActions extends BroadcastReceiver {
 
         } else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
             // Call WifiP2pManager.requestPeers() to get a list of current peers
-            System.out.println("2");
+            //Log.d(TAG, "2");
             if (wfManager != null) {
 
                 wfManager.requestPeers(wfChannel, wfPeerListListener);
@@ -126,7 +127,8 @@ public class D2DWifiDirectActions extends BroadcastReceiver {
 
         } else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
             // Respond to new connection or disconnections
-            System.out.println("3");
+            //System.out.println("3");
+            Log.d(TAG, "3");
             if (wfManager == null){
                 return;
             }
@@ -141,7 +143,7 @@ public class D2DWifiDirectActions extends BroadcastReceiver {
 
         } else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)) {
             // Respond to this device's wifi state changing
-            System.out.println("4");
+            //Log.d(TAG, "4");
         }
 
     }
