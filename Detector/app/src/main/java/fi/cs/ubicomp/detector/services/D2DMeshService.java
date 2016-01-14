@@ -46,9 +46,6 @@ public class D2DMeshService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.d(TAG, "onStartCommand");
 
-
-
-
 		if (nDevice==null){
 
 			Log.d(TAG, "trying to re-load...");

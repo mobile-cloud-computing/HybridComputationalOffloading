@@ -27,6 +27,7 @@ import java.io.IOException;
 
 import fi.cs.ubicomp.detector.database.DatabaseCommons;
 import fi.cs.ubicomp.detector.database.DatabaseHandler;
+import fi.cs.ubicomp.detector.notification.GCMNotifier;
 import fi.cs.ubicomp.detector.services.D2DMeshService;
 import fi.cs.ubicomp.detector.services.D2DScanService;
 import fi.cs.ubicomp.detector.utilities.Commons;
@@ -47,7 +48,13 @@ public class SurrogateSensor extends AppCompatActivity {
     //Bluetooth and WifiDirect services are provided by this service
     private D2DMeshService meshService;
 
+
+    //Manage app loops
     private String codeResult;
+
+
+    //Notification
+    GCMNotifier notifier;
 
 
     @Override
@@ -71,7 +78,7 @@ public class SurrogateSensor extends AppCompatActivity {
 
         dataEvent = DatabaseHandler.getInstance();
         dataEvent.setContext(context);
-        
+
     }
 
     @Override
@@ -91,7 +98,7 @@ public class SurrogateSensor extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_about) {
             AlertDialog.Builder dlgAbout = new AlertDialog.Builder(this);
-            dlgAbout.setTitle("Detector");
+            dlgAbout.setTitle("Infrastructure Sensor");
             dlgAbout.setMessage("Implemented using HyMobi Framework");
             dlgAbout.setPositiveButton("Ok", null);
             dlgAbout.setCancelable(true);
@@ -113,13 +120,16 @@ public class SurrogateSensor extends AppCompatActivity {
         Intent intent= new Intent(this, D2DMeshService.class);
         bindService(intent, meshConnection, Context.BIND_AUTO_CREATE);
 
+        notifier = new GCMNotifier(context);
+        notifier.registerNotifier();
+
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
 
-
+        notifier.unregisterMessage();
     }
 
     @Override

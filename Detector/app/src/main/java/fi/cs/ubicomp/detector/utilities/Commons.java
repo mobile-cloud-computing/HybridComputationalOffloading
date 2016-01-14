@@ -16,7 +16,7 @@ public class Commons {
 
 	public static final String GCM_PROJECT_ID = "662678731680";
 	public static final String GCM_MESSAGE_KEY = "message";
-	public static final String GCM_SERVER_URL = "http://powerful-river-1630.herokuapp.com/register";
+	public static final String GCM_SERVER_URL = "http://ec2-52-28-113-22.eu-central-1.compute.amazonaws.com:8080/GCM-mavenized-server/register";
 
 
 
@@ -31,7 +31,7 @@ public class Commons {
 	/*
 	* RTT
  	* */
-	public static final String SERVER_ADDRESS= "52.29.39.208";
+	public static final String SERVER_ADDRESS= "52.28.113.22";
 	public static final String SERVER_NAME = "Amazon-EC2";
 	public static final String SERVER_ADDRESS_ERROR="127.0.0.1";
 	public static final String SERVER_NAME_ERROR = "unreachable";
@@ -48,7 +48,7 @@ public class Commons {
 	* Upload file service
 	* */
 
-	public static final String WEB_SERVICE_POST = "http://ec2-52-29-39-208.eu-central-1.compute.amazonaws.com:8080/Uploader/UploadServlet";
+	public static final String WEB_SERVICE_POST = "http://ec2-52-28-113-22.eu-central-1.compute.amazonaws.com:8080/Uploader/UploadServlet";
 
 
 	/*

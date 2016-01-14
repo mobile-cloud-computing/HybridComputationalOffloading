@@ -46,15 +46,25 @@ public class TimeScheduler {
         Log.d(TAG, hour + ":" + minute + am_pm);
 
         date = parseDate(hour + ":" + minute);
+
         dateCompareOne = parseDate(compareStringOne);
         dateCompareTwo = parseDate(compareStringTwo);
 
 
+        //night
         if (am_pm.equals("PM")){
             if ( dateCompareOne.before( date ) && dateCompareTwo.after(date)) {
                 return true;
             }
         }
+
+        //morning
+        if (am_pm.equals("AM")){
+            if (dateCompareOne.before(date) && dateCompareTwo.after(date)){
+                return true;
+            }
+        }
+
 
         return false;
     }
