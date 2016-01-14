@@ -18,7 +18,7 @@ package fi.cs.ubicomp.detector.wifi;
 
 public class NetInfo {
 	
-	public static byte[] ipAddress = {Integer.valueOf("52").byteValue(),Integer.valueOf("29").byteValue(),Integer.valueOf("39").byteValue(),Integer.valueOf("208").byteValue()};
+	public static byte[] ipAddress = {Integer.valueOf("52").byteValue(),Integer.valueOf("28").byteValue(),Integer.valueOf("113").byteValue(),Integer.valueOf("22").byteValue()};
 	//public static byte[] ipAddress = null;
     public static int port = 6000;
     public static int waitTime = 10000;
