@@ -12,7 +12,7 @@ This "infrastructure sensor" detects the devices in proximity to form self-organ
 
 **BibTex**
 ```xml
-@inproceedings{flores2016social,
+@inproceedings{flores2016sociald2d,
   title={Social-aware device-to-device communication: a contribution for edge and fog computing?},
   author={Flores, Huber and Ferreira, Denzil and Luo, Chu and Kostakos, Vassilis and Hui, Pan and Sharma, Rajesh and Tarkoma, Sasu and Li, Yong},
   booktitle={Proceedings of the 2016 ACM International Joint Conference on Pervasive and Ubiquitous Computing: Adjunct},
